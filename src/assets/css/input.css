@@ -8,8 +8,7 @@
 }
 
 html {
-    font-family: "Nunito", sans-serif;
-    @apply xs:text-[16px] text-[15px];
+    @apply xs:text-[16px] text-[15px] font-roboto;
 }
 
 .wrapper {
