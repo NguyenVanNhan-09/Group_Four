@@ -8,7 +8,7 @@
 }
 
 html {
-    @apply xs:text-[16px] text-[15px] font-roboto;
+    @apply xs:text-[16px] text-[13px] font-roboto;
 }
 
 .wrapper {

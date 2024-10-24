@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+<h1>Test User</h1>
+<div id="root"></div>
+<script type="module">
+    import { fetchData } from "../assets/js/demoDTO.js";
+    const usersDisplay = async () => {
+        const users = await fetchData();
+        const userListDiv = document.querySelector('#root');
+        userListDiv.innerHTML = ''; // Xóa nội dung cũ
+
+        users.forEach((user) => {
+            const userDiv = document.createElement('div');
+            userDiv.textContent = `${user.id} / ${user.username} / ${user.email} / ${user.password}`;
+            userListDiv.appendChild(userDiv);
+        });
+    }
+    usersDisplay();
+</script>
+</body>
+</html>
