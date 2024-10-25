@@ -1,4 +1,4 @@
-const API_URL = "https://d573-14-224-128-247.ngrok-free.app/";
+const API_URL = "https://d573-14-224-128-247.ngrok-free.app/"
 
 const apiClient = axios.create({
    baseURL: API_URL,
@@ -14,12 +14,13 @@ apiClient.interceptors.request.use(
    function (config) {
       const accessToken = localStorage.getItem("accessToken");
       if (accessToken) {
-         config.headers["Authorization"] = `Bearer ${accessToken}`;
+         config.headers["Authorization"] = `Bearer ${accessToken}`
       }
       return config;
    },
    function (error) {
-      return Promise.reject(error);
+      return Promise.reject(error)
    }
-);
-export default apiClient;
+)
+
+export default apiClient

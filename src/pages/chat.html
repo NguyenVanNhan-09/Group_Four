@@ -84,72 +84,26 @@
                                 <p class="font-light text-textPrimary text-sm">Online - Last seen, 2.02pm</p>
                             </div>
                         </div>
-                        <div class="flex">
-                            <img src="../assets/icons/ti-phone.svg" alt="" class="w-[38px] h-[38px] hidden xs:flex">
-                            <img src="../assets/icons/ti-camera.svg" alt=""
-                                 class="w-[38px] h-[38px] mx-[20px] hidden xs:flex">
-                            <img src="../assets/icons/ti-option.svg" alt=""
-                                 class="xs:w-[38px] xs:h-[38px] w-6 h-6 ">
+                      
+                        <div class="mt-[14px]">
+                            <div id="chat-container" class="h-full min-h-[530px] max-h-[530px] overflow-y-auto pr-2">
+                                <div style="display: none;" id="more-chat-loading" class="py-6">
+                                    <div class="flex flex-row gap-2 justify-center">
+                                        <div class="w-4 h-4 rounded-full bg-primary animate-bounce"></div>
+                                        <div
+                                            class="w-4 h-4 rounded-full bg-primary animate-bounce [animation-delay:-.3s]">
+                                        </div>
+                                        <div
+                                            class="w-4 h-4 rounded-full bg-primary animate-bounce [animation-delay:-.5s]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="chat-wrapper">
+                                </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                    <div class="mt-[14px]">
-                        <div class="h-full min-h-[530px] max-h-[530px] overflow-y-auto ">
-                            <!-- Outgoing Message -->
-                            <div class="flex justify-end mb-4 cursor-pointer">
-                                <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
-                                    <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
-                                </div>
-                                <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                                    <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                         alt="My Avatar" class="w-8 h-8 rounded-full">
-                                </div>
-                            </div>
-                            <!-- Incoming Message -->
-                            <div class="flex mb-4 cursor-pointer">
-                                <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-                                    <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                         alt="User Avatar" class="w-8 h-8 rounded-full">
-                                </div>
-                                <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
-                                    <p class="text-white">Hey Bob, how's it going?</p>
-                                </div>
-                            </div>
-
-                            <!-- Outgoing Message -->
-                            <div class="flex justify-end mb-4 cursor-pointer">
-                                <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
-                                    <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
-                                </div>
-                                <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                                    <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                         alt="My Avatar" class="w-8 h-8 rounded-full">
-                                </div>
-                            </div>
-                            <!-- Incoming Message -->
-                            <div class="flex mb-4 cursor-pointer">
-                                <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-                                    <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                         alt="User Avatar" class="w-8 h-8 rounded-full">
-                                </div>
-                                <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
-                                    <p class="text-white">Hey Bob, how's it going?</p>
-                                </div>
-                            </div>
-
-                            <!-- Outgoing Message -->
-                            <div class="flex justify-end mb-4 cursor-pointer">
-                                <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
-                                    <p id="my__message">Hi Alice! I'm good, just finished a great book. How about
-                                        you?</p>
-                                </div>
-                                <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                                    <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                         alt="My Avatar" class="w-8 h-8 rounded-full">
-                                </div>
-                            </div>
-
-
-                        </div>
+                  
                         <form action="" id="form__message">
                             <div class="flex items-center gap-[18px] mt-[24px]">
                                 <div class="relative flex items-center w-full">
