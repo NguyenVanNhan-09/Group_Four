@@ -18,21 +18,20 @@ formSignin?.addEventListener("submit", async (e) => {
                 id: result.data.data.id,
                 username: result.data.data.username,
             }
-            localStorage.setItem("token", result.data.data.accessToken);
-            localStorage.setItem("userInfo", JSON.stringify(userInfo));
+            localStorage.setItem("accessToken", result.data.data.accessToken);
+
             notification.classList.remove("hidden");
             setTimeout( () => {
-                window.location.href = "../index.html";
-
+                window.location.href = "../../src/pages/chat.html";
             }, 2000)
         } catch(error) {
             console.log("error: ",error.response.data.error);
             notification.classList.remove("hidden");
             notification.innerHTML = "Email hoặc Mật Khẩu không đúng";
-            setTimeout( () => {
-                notification.classList.add("hidden");
-
-            })
+            // setTimeout( () => {
+            //     notification.classList.add("hidden");
+            //
+            // })
         }
 
     }
@@ -120,3 +119,7 @@ function validateFormSignup(username, email, password,confirmPassword) {
     }
     return isValid;
 }
+const signinLink = document.getElementById("signin-link");
+signinLink?.addEventListener("click", (e) => {
+    signinLink.href = 'signin.html';
+})
