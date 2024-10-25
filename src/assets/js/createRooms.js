@@ -3,17 +3,18 @@ import apiClient from "./axiosConfig.js";
 (async () => {
    try {
       const res = await apiClient.get('v1/users/verify_token')
+      localStorage.setItem("userInfo", JSON.stringify(res.data.data));
    } catch (error) {
       localStorage.removeItem('accessToken')
       localStorage.removeItem('userInfo')
-      window.location.href = '../signin.html'
+      window.location.href = '../../src/pages/signin.html'
    }
 })();
 
-localStorage.setItem(
-   "accessToken",
-   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MWE2MDAyOWRmNTBlMzg1MjRkZDk3MyIsImVtYWlsIjoibmhpbWM5eEBnbWFpbC5jb20iLCJ1c2VybmFtZSI6Ikxpc2EiLCJpYXQiOjE3Mjk3ODE4NjMsImV4cCI6MTcyOTg2ODI2M30.AmaSHp13kh9ufsnnXRd9jdER4BzUzvGiz9uDdkUz-LI"
-);
+// localStorage.setItem(
+//    "accessToken",
+//    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MWE2MDAyOWRmNTBlMzg1MjRkZDk3MyIsImVtYWlsIjoibmhpbWM5eEBnbWFpbC5jb20iLCJ1c2VybmFtZSI6Ikxpc2EiLCJpYXQiOjE3Mjk3ODE4NjMsImV4cCI6MTcyOTg2ODI2M30.AmaSHp13kh9ufsnnXRd9jdER4BzUzvGiz9uDdkUz-LI"
+// );
 const $ = document.querySelector.bind(document);
 
 const formCreateGroup = $("#form__create-group");
@@ -197,3 +198,10 @@ async function getGroups() {
 }
 
 getGroups();
+
+//button logout
+$('#logout').addEventListener('click', (e) => {
+   localStorage.removeItem('accessToken')
+   localStorage.removeItem('userInfo')
+   window.location.href = '../../src/pages/signin.html'
+})

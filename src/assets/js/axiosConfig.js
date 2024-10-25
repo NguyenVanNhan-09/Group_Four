@@ -1,13 +1,13 @@
-const API_URL = "https://d573-14-224-128-247.ngrok-free.app/"
+const API_URL = 'https://d573-14-224-128-247.ngrok-free.app/'
 
 const apiClient = axios.create({
-   baseURL: API_URL,
-   timeout: 10000,
-   headers: {
-      "Content-Type": "application/json",
-      "ngrok-skip-browser-warning": "true",
-   },
-});
+    baseURL: API_URL,
+    timeout: 10000,
+    headers: {
+        'Content-Type': 'application/json',
+        'ngrok-skip-browser-warning': 'true'
+    }
+})
 
 // Bộ đánh chặn (interceptors)
 apiClient.interceptors.request.use(
