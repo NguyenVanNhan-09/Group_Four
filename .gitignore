@@ -1,2 +1,4 @@
 node_modules
-
+/src/assets/css/output.css
+.gitignore
+.idea

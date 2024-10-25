@@ -1,4 +1,4 @@
-const API_URL = 'http://localhost:8017/'
+const API_URL = 'https://08fb-14-224-128-247.ngrok-free.app/'
 
 const apiClient = axios.create({
     baseURL: API_URL,
