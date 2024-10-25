@@ -148,8 +148,7 @@ formMessage.addEventListener("submit", async (e) => {
          }
       );
       console.log("Group created:", response.data);
-      console.log(messageInput);
-      myMessage.innerText = messageInput
+      const htmls = (myMessage.textContent = messageInput);
    } catch (err) {
       console.log(err);
    }
@@ -160,16 +159,38 @@ formMessage.addEventListener("submit", async (e) => {
 async function getGroups() {
    try {
       const response = await apiClient.get("v1/rooms/get_all");
-      console.log("Groups:", response.data.data);
-        listGroups.innerHTML = "";
-        response.data.data.forEach((group) => {
-           listGroups.innerHTML += `
-              <div class="group-item" data-room-id="${group.id}">
-                  <h3>${group.roomName}</h3>
-                  <p>${group.users.length} members</p>
-              </div>
-           `;
-        });
+      const groups = response.data.data;
+      groups.forEach((room) => {
+         console.log(room);
+         const timestamp = room.createAt;
+         const date = new Date(timestamp);
+         const hours = date.getHours();
+         const minutes = date.getMinutes().toString().padStart(2, "0");
+         const period = hours >= 12 ? "pm" : "am";
+         const formattedHours = hours % 12 || 12;
+         const formattedTime = `${formattedHours}.${minutes}${period}`;
+         const htmls = `
+            <li class="flex items-center border-b border-[#B4ABAB] py-[14px]" >
+               <img src=${room.avatarRoom} class="w-[45px] h-[45px] mr-[16px]"
+                     alt="no img">
+               <div class="flex items-center justify-between w-full">
+                     <div class="flex flex-col">
+                        <h4 class="text-base text-textPrimary font-semibold">${
+                           room.roomName
+                        }</h4>
+                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${
+                           room?.latestMessage?.content || "chưa có tin nhắn nào"
+                        }
+                       </p>
+                     </div>
+                     <div class="flex flex-col items-end">
+                        <p class="text-[12px] text-textPrimary font-light">${formattedTime}</p>
+                     </div>
+               </div>
+            </li>
+         `;
+         listGroups.innerHTML += htmls;
+      });
    } catch (err) {
       console.log(err);
    }

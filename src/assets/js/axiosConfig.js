@@ -1,24 +1,26 @@
-const API_URL = 'https://08fb-14-224-128-247.ngrok-free.app/'
+const API_URL = "https://d573-14-224-128-247.ngrok-free.app/"
 
 const apiClient = axios.create({
-    baseURL: API_URL,
-    timeout: 10000,
-    headers: {
-        'Content-Type': 'application/json'
-    }
-})
+   baseURL: API_URL,
+   timeout: 10000,
+   headers: {
+      "Content-Type": "application/json",
+      "ngrok-skip-browser-warning": "true",
+   },
+});
 
 // Bộ đánh chặn (interceptors)
 apiClient.interceptors.request.use(
-    function (config) {
-        const accessToken = localStorage.getItem('accessToken')
-        if (accessToken) {
-            config.headers['Authorization'] = `Bearer ${accessToken}`
-        }
-        return config
-    },
-    function (error) {
-        return Promise.reject(error);
-    }
+   function (config) {
+      const accessToken = localStorage.getItem("accessToken");
+      if (accessToken) {
+         config.headers["Authorization"] = `Bearer ${accessToken}`
+      }
+      return config;
+   },
+   function (error) {
+      return Promise.reject(error)
+   }
 )
+
 export default apiClient
