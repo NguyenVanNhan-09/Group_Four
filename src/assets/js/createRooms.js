@@ -1,7 +1,18 @@
 import apiClient from "./axiosConfig.js";
+
+(async () => {
+   try {
+      const res = await apiClient.get('v1/users/verify_token')
+   } catch (error) {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('userInfo')
+      window.location.href = '../signin.html'
+   }
+})();
+
 localStorage.setItem(
    "accessToken",
-   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MThhMDQ2NTE1MmY1ZjNhNTAxNDA1NCIsImVtYWlsIjoibmhpMTIzQGdtYWlsLmNvbSIsImlhdCI6MTcyOTczNDQ1NywiZXhwIjoxNzI5ODIwODU3fQ.0PSE5X1vJSGhYF2AdYtke_8nhTVSThMeO9m82l1pr2w"
+   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MWE2MDAyOWRmNTBlMzg1MjRkZDk3MyIsImVtYWlsIjoibmhpbWM5eEBnbWFpbC5jb20iLCJ1c2VybmFtZSI6Ikxpc2EiLCJpYXQiOjE3Mjk3ODE4NjMsImV4cCI6MTcyOTg2ODI2M30.AmaSHp13kh9ufsnnXRd9jdER4BzUzvGiz9uDdkUz-LI"
 );
 const $ = document.querySelector.bind(document);
 
@@ -51,6 +62,71 @@ imgInput.addEventListener("change", (event) => {
    }
 });
 
+// Render tin nhắn
+const chatWrapperNode = $('#chat-wrapper')
+const moreChatLoadingNode = $('#more-chat-loading')
+const chatContainerNode = $('#chat-container')
+// let MY_ID = '671a60029df50e38524dd973'
+let MY_ID = '671a60289df50e38524dd975'
+let currentPage = 1
+let hasMore = true
+let isLoading = false
+
+const getMessagesInRoom = async (page = 1) => {
+   try {
+      const res = await apiClient.get(`v1/messages/671a60b59df50e38524dd976?page=${page}`)
+      const data = res.data.data
+      if(page === 1) {
+         console.log('first', data[data.length - 1])
+      }
+      return data
+   } catch (error) {
+      console.log(error)
+   }
+}
+const renderMessages = async (page) => {
+   if (isLoading || !hasMore) return
+   isLoading = true
+   moreChatLoadingNode.style.display = 'block'
+   const list = await getMessagesInRoom(page)
+   if (list.length === 0) {
+      hasMore = false
+      isLoading = false
+      moreChatLoadingNode.style.display = 'none'
+      return
+   }
+   hasMore = true
+   console.log(list)
+   list.forEach(item => {
+      const messageElement = document.createElement('div')
+      const class1 = MY_ID === item.userInfo.userId ? '*:bg-primary flex-row-reverse' : '*:bg-gray-400'
+      messageElement.className = `flex mb-4 gap-2.5 cursor-pointer text-white ${class1}`
+      messageElement.innerHTML = `
+            <div class="size-9 rounded-full">
+               <img src="${item.userInfo.avatar}"
+                     alt="My Avatar" class="size-full object-cover rounded-full">
+            </div>
+            <div class="max-w-96 rounded-lg p-3">
+               ${item.message.type === 'text' ? `<p>${item.message.content}</p>` : `<img class="max-w-60" src="${item.message.content}" alt="">`}
+            </div>
+      `
+      chatWrapperNode.prepend(messageElement)
+   })
+   isLoading = false
+   moreChatLoadingNode.style.display = 'none'
+}
+renderMessages(1)
+chatContainerNode.addEventListener('scroll', () => {
+   if (chatContainerNode.scrollTop === 0 && hasMore && !isLoading) {
+      ++currentPage
+      renderMessages(currentPage)
+   }
+})
+
+// let realTimeUpdateMessage = setInterval(() => {
+//    renderMessages(1)
+// }, 100000)
+
 // tin nhắn mới
 formMessage.addEventListener("submit", async (e) => {
    e.preventDefault();
@@ -63,7 +139,7 @@ formMessage.addEventListener("submit", async (e) => {
    }
    try {
       const response = await apiClient.post(
-         "v1/messages/671a027622329f6f981f0758",
+         "v1/messages/671a60b59df50e38524dd976",
          formData,
          {
             headers: {
@@ -72,7 +148,8 @@ formMessage.addEventListener("submit", async (e) => {
          }
       );
       console.log("Group created:", response.data);
-      myMessage.textContent = messageInput;
+      console.log(messageInput);
+      myMessage.innerText = messageInput
    } catch (err) {
       console.log(err);
    }
@@ -83,16 +160,16 @@ formMessage.addEventListener("submit", async (e) => {
 async function getGroups() {
    try {
       const response = await apiClient.get("v1/rooms/get_all");
-      console.log("Groups:", response);
-      //   listGroups.innerHTML = "";
-      //   response.data.forEach((group) => {
-      //      listGroups.innerHTML += `
-      //         <div class="group-item" data-room-id="${group.id}">
-      //             <h3>${group.roomName}</h3>
-      //             <p>${group.users.length} members</p>
-      //         </div>
-      //      `;
-      //   });
+      console.log("Groups:", response.data.data);
+        listGroups.innerHTML = "";
+        response.data.data.forEach((group) => {
+           listGroups.innerHTML += `
+              <div class="group-item" data-room-id="${group.id}">
+                  <h3>${group.roomName}</h3>
+                  <p>${group.users.length} members</p>
+              </div>
+           `;
+        });
    } catch (err) {
       console.log(err);
    }

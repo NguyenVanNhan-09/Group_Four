@@ -104,8 +104,53 @@
                             </div>
                         </div>
                         <div class="mt-[14px]">
-                            <div class="h-full min-h-[530px] max-h-[530px] overflow-y-auto ">
-                                <!-- Outgoing Message -->
+                            <div id="chat-container" class="h-full min-h-[530px] max-h-[530px] overflow-y-auto pr-2">
+                                <div style="display: none;" id="more-chat-loading" class="py-6">
+                                    <div class="flex flex-row gap-2 justify-center">
+                                        <div class="w-4 h-4 rounded-full bg-primary animate-bounce"></div>
+                                        <div
+                                            class="w-4 h-4 rounded-full bg-primary animate-bounce [animation-delay:-.3s]">
+                                        </div>
+                                        <div
+                                            class="w-4 h-4 rounded-full bg-primary animate-bounce [animation-delay:-.5s]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="chat-wrapper">
+
+                                </div>
+                                <!-- <div class="flex mb-4 gap-2.5 cursor-pointer text-white *:bg-gray-400">
+                                    <div class="size-9 rounded-full">
+                                        <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                            alt="My Avatar" class="size-full object-cover rounded-full">
+                                    </div>
+                                    <div class="max-w-96 rounded-lg p-3">
+                                        <img class="max-w-60"
+                                            src="https://res.cloudinary.com/dqnzb1ieq/image/upload/v1729763954/Ao_Khoac_Adilenium_Season_2_Megabreak_DJen_JN0810_01_laydown_j3kowj.avif"
+                                            alt="">
+                                    </div>
+                                </div>
+                                <div class="flex mb-4 gap-2.5 cursor-pointer text-white flex-row-reverse *:bg-primary">
+                                    <div class="size-9 rounded-full">
+                                        <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                            alt="My Avatar" class="size-full object-cover rounded-full">
+                                    </div>
+                                    <div class="max-w-96 rounded-lg p-3">
+                                        <img class="max-w-60"
+                                            src="https://res.cloudinary.com/dqnzb1ieq/image/upload/v1729763954/Ao_Khoac_Adilenium_Season_2_Megabreak_DJen_JN0810_01_laydown_j3kowj.avif"
+                                            alt="">
+                                    </div>
+                                </div>
+                                <div class="flex mb-4 cursor-pointer">
+                                    <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
+                                        <p class="text-white">Hey Bob, how's it going?</p>
+                                    </div>
+                                    <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
+                                        <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                            alt="User Avatar" class="w-8 h-8 rounded-full">
+                                    </div>
+                                </div>
+
                                 <div class="flex justify-end mb-4 cursor-pointer">
                                     <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
                                         <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
@@ -115,7 +160,6 @@
                                             alt="My Avatar" class="w-8 h-8 rounded-full">
                                     </div>
                                 </div>
-                                <!-- Incoming Message -->
                                 <div class="flex mb-4 cursor-pointer">
                                     <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
                                         <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
@@ -126,28 +170,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Outgoing Message -->
-                                <div class="flex justify-end mb-4 cursor-pointer">
-                                    <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
-                                        <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
-                                    </div>
-                                    <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                                        <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                            alt="My Avatar" class="w-8 h-8 rounded-full">
-                                    </div>
-                                </div>
-                                <!-- Incoming Message -->
-                                <div class="flex mb-4 cursor-pointer">
-                                    <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-                                        <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                            alt="User Avatar" class="w-8 h-8 rounded-full">
-                                    </div>
-                                    <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
-                                        <p class="text-white">Hey Bob, how's it going?</p>
-                                    </div>
-                                </div>
-
-                                <!-- Outgoing Message -->
                                 <div class="flex justify-end mb-4 cursor-pointer">
                                     <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
                                         <p id="my__message">Hi Alice! I'm good, just finished a great book. How about
@@ -157,7 +179,7 @@
                                         <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
                                             alt="My Avatar" class="w-8 h-8 rounded-full">
                                     </div>
-                                </div>
+                                </div> -->
 
 
                             </div>
