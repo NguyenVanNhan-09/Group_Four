@@ -1,7 +1,7 @@
 import apiClient from "./axiosConfig.js";
 localStorage.setItem(
    "accessToken",
-   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MThhMDQ2NTE1MmY1ZjNhNTAxNDA1NCIsImVtYWlsIjoibmhpMTIzQGdtYWlsLmNvbSIsImlhdCI6MTcyOTczNDQ1NywiZXhwIjoxNzI5ODIwODU3fQ.0PSE5X1vJSGhYF2AdYtke_8nhTVSThMeO9m82l1pr2w"
+   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MWE2MDAyOWRmNTBlMzg1MjRkZDk3MyIsImVtYWlsIjoibmhpbWM5eEBnbWFpbC5jb20iLCJ1c2VybmFtZSI6Ikxpc2EiLCJpYXQiOjE3Mjk3ODE4NjMsImV4cCI6MTcyOTg2ODI2M30.AmaSHp13kh9ufsnnXRd9jdER4BzUzvGiz9uDdkUz-LI"
 );
 const $ = document.querySelector.bind(document);
 
@@ -72,7 +72,7 @@ formMessage.addEventListener("submit", async (e) => {
          }
       );
       console.log("Group created:", response.data);
-      myMessage.textContent = messageInput;
+      const htmls = (myMessage.textContent = messageInput);
    } catch (err) {
       console.log(err);
    }
@@ -83,16 +83,38 @@ formMessage.addEventListener("submit", async (e) => {
 async function getGroups() {
    try {
       const response = await apiClient.get("v1/rooms/get_all");
-      console.log("Groups:", response);
-      //   listGroups.innerHTML = "";
-      //   response.data.forEach((group) => {
-      //      listGroups.innerHTML += `
-      //         <div class="group-item" data-room-id="${group.id}">
-      //             <h3>${group.roomName}</h3>
-      //             <p>${group.users.length} members</p>
-      //         </div>
-      //      `;
-      //   });
+      const groups = response.data.data;
+      groups.forEach((room) => {
+         console.log(room);
+         const timestamp = room.createAt;
+         const date = new Date(timestamp);
+         const hours = date.getHours();
+         const minutes = date.getMinutes().toString().padStart(2, "0");
+         const period = hours >= 12 ? "pm" : "am";
+         const formattedHours = hours % 12 || 12;
+         const formattedTime = `${formattedHours}.${minutes}${period}`;
+         const htmls = `
+            <li class="flex items-center border-b border-[#B4ABAB] py-[14px]" >
+               <img src=${room.avatarRoom} class="w-[45px] h-[45px] mr-[16px]"
+                     alt="no img">
+               <div class="flex items-center justify-between w-full">
+                     <div class="flex flex-col">
+                        <h4 class="text-base text-textPrimary font-semibold">${
+                           room.roomName
+                        }</h4>
+                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${
+                           room?.latestMessage?.content || "chưa có tin nhắn nào"
+                        }
+                       </p>
+                     </div>
+                     <div class="flex flex-col items-end">
+                        <p class="text-[12px] text-textPrimary font-light">${formattedTime}</p>
+                     </div>
+               </div>
+            </li>
+         `;
+         listGroups.innerHTML += htmls;
+      });
    } catch (err) {
       console.log(err);
    }

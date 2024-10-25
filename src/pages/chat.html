@@ -10,312 +10,303 @@
 </head>
 
 <body>
-    <div class="font-roboto bg-[#C9E6F6] min-h-screen">
-        <div class="w-full h-full max-w-[1200px] mx-auto xs:px-4 py-[44px]">
-            <div
-                class="xs:grid flex grid-cols-5 xs:grid-cols-3 gap-1 lg:grid-cols-[120px_3fr] lg:gap-6 overflow-hidden">
-                <!--sidebar-->
-                <div class="min-h-full min-w-[60px] rounded-[25px] overflow-hidden">
-                    <div class="flex h-full w-full flex-col items-center border-r border-gray-200 bg-blue-300">
-                        <div
+<div class="font-roboto bg-[#C9E6F6] min-h-screen">
+    <div class="w-full h-full max-w-[1200px] mx-auto xs:px-4 py-[44px]">
+        <div
+                class="xs:grid max-h-[800px] flex grid-cols-5 xs:grid-cols-3 gap-1 lg:grid-cols-[120px_3fr] lg:gap-6 overflow-hidden">
+            <!--sidebar-->
+            <div class="min-h-full min-w-[60px] rounded-[25px] overflow-hidden">
+                <div class="flex h-full w-full flex-col items-center border-r border-gray-200 bg-blue-300">
+                    <div
                             class="flex items-center justify-center rounded-full w-[40px] h-[40px] xs:w-[68px] xs:h-[68px] mt-[32px] overflow-hidden">
-                            <img class="img-cover" src="../assets/icons/Ellipse 1.png" />
-                        </div>
-                        <nav class="flex flex-1 flex-col gap-y-6 pt-10">
-                            <a href="#" class="text-gary-400 group relative rounded-xl p-2 ">
-                                <img src="../assets/icons/ti-home.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
-                                    alt="">
-                            </a>
-                            <a href="#" class="btn-chats text-gary-400 group relative rounded-xl p-2 ">
-                                <img src="../assets/icons/ti-chat.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
-                                    alt="">
-                            </a>
-                            <button id="openModalBtn" class="text-gary-400 group relative rounded-xl p-2 ">
-                                <img src="../assets/icons/ti-group.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
-                                    alt="">
-                            </button>
-                            <a href="#" class="text-gary-400 group relative rounded-xl p-2 ">
-                                <img src="../assets/icons/ti-setting.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
-                                    alt="">
-                            </a>
-                        </nav>
-                        <div class="flex flex-col items-center gap-y-4 py-10">
-                            <button class="group relative rounded-xl p-2 text-gray-400 ">
-                                <img src="../assets/icons/ti-logout.svg" alt="" class="h-8 w-8 xs:h-10 xs:w-10">
-                            </button>
-                        </div>
+                        <img class="img-cover" src="../assets/icons/Ellipse 1.png"/>
+                    </div>
+                    <nav class="flex flex-1 flex-col gap-y-6 pt-10">
+                        <a href="#" class="text-gary-400 group relative rounded-xl p-2 ">
+                            <img src="../assets/icons/ti-home.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
+                                 alt="">
+                        </a>
+                        <a href="#" class="btn-chats text-gary-400 group relative rounded-xl p-2 ">
+                            <img src="../assets/icons/ti-chat.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
+                                 alt="">
+                        </a>
+                        <button id="openModalBtn" class="text-gary-400 group relative rounded-xl p-2 ">
+                            <img src="../assets/icons/ti-group.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
+                                 alt="">
+                        </button>
+                        <a href="#" class="text-gary-400 group relative rounded-xl p-2 ">
+                            <img src="../assets/icons/ti-setting.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
+                                 alt="">
+                        </a>
+                    </nav>
+                    <div class="flex flex-col items-center gap-y-4 py-10">
+                        <button class="group relative rounded-xl p-2 text-gray-400 ">
+                            <img src="../assets/icons/ti-logout.svg" alt="" class="h-8 w-8 xs:h-10 xs:w-10">
+                        </button>
                     </div>
                 </div>
+            </div>
 
-                <div class="grid grid-cols-1 gap-1 lg:grid-cols-3 lg:gap-6 w-full">
-                    <!--List Chats-->
-                    <div id="list-chats" class="h-full xs:flex-col xs:flex w-full col-span-1 hidden">
-                        <!-- sreach -->
-                        <div
+            <div class="grid grid-cols-1 gap-1 lg:grid-cols-3 lg:gap-6 w-full">
+                <!--List Chats-->
+                <div id="list-chats" class="h-full xs:flex-col xs:flex w-full col-span-1 hidden">
+                    <!-- sreach -->
+                    <div
                             class="flex px-4 w-full py-3 rounded-[18px] bg-white shadow-custom overflow-hidden border-none max-w-full mx-auto">
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
-                                class="fill-gray-600 mr-3 rotate-90">
-                                <path
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+                             class="fill-gray-600 mr-3 rotate-90">
+                            <path
                                     d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z">
-                                </path>
-                            </svg>
-                            <input type="email" placeholder="Search Something..."
-                                class="w-full outline-none bg-white text-gray-600 text-sm" />
-                        </div>
+                            </path>
+                        </svg>
+                        <input type="email" placeholder="Search Something..."
+                               class="w-full outline-none bg-white text-gray-600 text-sm"/>
+                    </div>
+                    <div class="max-h-[700px] mt-[18px]  rounded-[25px] flex-grow overflow-y-auto p-[22px] bg-white">
 
-                        <div class="w-full bg-white mt-[18px] rounded-[25px] flex-grow p-[22px] min-h-[530px]">
+                        <div class="w-full ">
                             <h3 class="text-[26px] font-bold text-textPrimary">Chats</h3>
                             <ul class="w-full" id="list__groups">
-                                <li class="flex items-center border-b border-[#B4ABAB] py-[14px]">
-                                    <img src="../assets/icons/Ellipse 1.png" class="w-[45px] h-[45px] mr-[16px]"
-                                        alt="no img">
-                                    <div class="flex items-center justify-between w-full">
-                                        <div class="flex flex-col">
-                                            <h4 class="text-base text-textPrimary font-semibold">Friends Forever</h4>
-                                            <p class="text-textPrimary font-light text-sm">hahaha</p>
-                                        </div>
-                                        <div class="flex flex-col items-end">
-                                            <p class="text-[12px] text-textPrimary font-light">Today, 9.52pm</p>
-                                            <span
-                                                class="py-[2px] px-[8px] bg-[#F24E1E] text-white rounded-full text-[12px]">4</span>
-                                        </div>
-                                    </div>
-                                </li>
+
                             </ul>
                         </div>
                     </div>
-                    <!--Box chat-->
-                    <div id="box-chat"
-                        class="h-full  xs:flex xs:flex-col bg-white rounded-[24px] lg:col-span-2 py-[24px] px-[35px] w-full">
-                        <div class="flex items-center justify-between border-b border-[#B4ABAB] pb-[20px]">
-                            <div class="flex items-center">
-                                <img src="../assets/icons/Ellipse 1.png" class="w-[55px] h-[55px] mr-[24px]" alt="">
-                                <div>
-                                    <h5 class="font-semibold text-textPrimary text-[24px]">Anil</h5>
-                                    <p class="font-light text-textPrimary text-sm">Online - Last seen, 2.02pm</p>
-                                </div>
-                            </div>
-                            <div class="flex">
-                                <img src="../assets/icons/ti-phone.svg" alt="" class="w-[38px] h-[38px] hidden xs:flex">
-                                <img src="../assets/icons/ti-camera.svg" alt=""
-                                    class="w-[38px] h-[38px] mx-[20px] hidden xs:flex">
-                                <img src="../assets/icons/ti-option.svg" alt=""
-                                    class="xs:w-[38px] xs:h-[38px] w-6 h-6 ">
+
+                </div>
+                <!--Box chat-->
+                <div id="box-chat"
+                     class="h-full  xs:flex xs:flex-col bg-white rounded-[24px] lg:col-span-2 py-[24px] px-[35px] w-full">
+                    <div class="flex items-center justify-between border-b border-[#B4ABAB] pb-[20px]">
+                        <div class="flex items-center">
+                            <img src="../assets/icons/Ellipse 1.png" class="w-[55px] h-[55px] mr-[24px]" alt="">
+                            <div>
+                                <h5 class="font-semibold text-textPrimary text-[24px]">Anil</h5>
+                                <p class="font-light text-textPrimary text-sm">Online - Last seen, 2.02pm</p>
                             </div>
                         </div>
-                        <div class="mt-[14px]">
-                            <div class="h-full min-h-[530px] max-h-[530px] overflow-y-auto ">
-                                <!-- Outgoing Message -->
-                                <div class="flex justify-end mb-4 cursor-pointer">
-                                    <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
-                                        <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
-                                    </div>
-                                    <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                                        <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                            alt="My Avatar" class="w-8 h-8 rounded-full">
-                                    </div>
+                        <div class="flex">
+                            <img src="../assets/icons/ti-phone.svg" alt="" class="w-[38px] h-[38px] hidden xs:flex">
+                            <img src="../assets/icons/ti-camera.svg" alt=""
+                                 class="w-[38px] h-[38px] mx-[20px] hidden xs:flex">
+                            <img src="../assets/icons/ti-option.svg" alt=""
+                                 class="xs:w-[38px] xs:h-[38px] w-6 h-6 ">
+                        </div>
+                    </div>
+                    <div class="mt-[14px]">
+                        <div class="h-full min-h-[530px] max-h-[530px] overflow-y-auto ">
+                            <!-- Outgoing Message -->
+                            <div class="flex justify-end mb-4 cursor-pointer">
+                                <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
+                                    <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
                                 </div>
-                                <!-- Incoming Message -->
-                                <div class="flex mb-4 cursor-pointer">
-                                    <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-                                        <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                            alt="User Avatar" class="w-8 h-8 rounded-full">
-                                    </div>
-                                    <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
-                                        <p class="text-white">Hey Bob, how's it going?</p>
-                                    </div>
+                                <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
+                                    <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                         alt="My Avatar" class="w-8 h-8 rounded-full">
                                 </div>
-
-                                <!-- Outgoing Message -->
-                                <div class="flex justify-end mb-4 cursor-pointer">
-                                    <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
-                                        <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
-                                    </div>
-                                    <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                                        <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                            alt="My Avatar" class="w-8 h-8 rounded-full">
-                                    </div>
-                                </div>
-                                <!-- Incoming Message -->
-                                <div class="flex mb-4 cursor-pointer">
-                                    <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
-                                        <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                            alt="User Avatar" class="w-8 h-8 rounded-full">
-                                    </div>
-                                    <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
-                                        <p class="text-white">Hey Bob, how's it going?</p>
-                                    </div>
-                                </div>
-
-                                <!-- Outgoing Message -->
-                                <div class="flex justify-end mb-4 cursor-pointer">
-                                    <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
-                                        <p id="my__message">Hi Alice! I'm good, just finished a great book. How about
-                                            you?</p>
-                                    </div>
-                                    <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
-                                        <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
-                                            alt="My Avatar" class="w-8 h-8 rounded-full">
-                                    </div>
-                                </div>
-
-
                             </div>
-                            <form action="" id="form__message">
-                                <div class="flex items-center gap-[18px] mt-[24px]">
-                                    <div class="relative flex items-center w-full">
+                            <!-- Incoming Message -->
+                            <div class="flex mb-4 cursor-pointer">
+                                <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
+                                    <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                         alt="User Avatar" class="w-8 h-8 rounded-full">
+                                </div>
+                                <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
+                                    <p class="text-white">Hey Bob, how's it going?</p>
+                                </div>
+                            </div>
+
+                            <!-- Outgoing Message -->
+                            <div class="flex justify-end mb-4 cursor-pointer">
+                                <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
+                                    <p>Hi Alice! I'm good, just finished a great book. How about you?</p>
+                                </div>
+                                <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
+                                    <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                         alt="My Avatar" class="w-8 h-8 rounded-full">
+                                </div>
+                            </div>
+                            <!-- Incoming Message -->
+                            <div class="flex mb-4 cursor-pointer">
+                                <div class="w-9 h-9 rounded-full flex items-center justify-center mr-2">
+                                    <img src="https://placehold.co/200x/ffa8e4/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                         alt="User Avatar" class="w-8 h-8 rounded-full">
+                                </div>
+                                <div class="flex max-w-96 bg-gray-400 rounded-lg p-3 gap-3">
+                                    <p class="text-white">Hey Bob, how's it going?</p>
+                                </div>
+                            </div>
+
+                            <!-- Outgoing Message -->
+                            <div class="flex justify-end mb-4 cursor-pointer">
+                                <div class="flex max-w-96 bg-primary text-white rounded-lg p-3 gap-3">
+                                    <p id="my__message">Hi Alice! I'm good, just finished a great book. How about
+                                        you?</p>
+                                </div>
+                                <div class="w-9 h-9 rounded-full flex items-center justify-center ml-2">
+                                    <img src="https://placehold.co/200x/b7a8ff/ffffff.svg?text=ʕ•́ᴥ•̀ʔ&font=Lato"
+                                         alt="My Avatar" class="w-8 h-8 rounded-full">
+                                </div>
+                            </div>
+
+
+                        </div>
+                        <form action="" id="form__message">
+                            <div class="flex items-center gap-[18px] mt-[24px]">
+                                <div class="relative flex items-center w-full">
                                         <span class="absolute inset-y-0 flex items-center">
                                             <label for="img__message" type="button"
-                                                class="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
+                                                   class="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                                    stroke="currentColor" class="h-6 w-6 text-gray-600">
+                                                     stroke="currentColor" class="h-6 w-6 text-gray-600">
                                                     <path stroke-linecap="round" stroke-linejoin="round"
-                                                        stroke-width="2"
-                                                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
+                                                          stroke-width="2"
+                                                          d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
                                                     </path>
                                                 </svg>
                                             </label>
                                             <input id="img__message" type="file" class="hidden" accept="image/*">
                                         </span>
-                                        <div
+                                    <div
                                             class="flex items-center bg-gray-200 rounded-[25px] py-3 pl-10 pr-4 w-full">
-                                            <input id="text__message" type="text" placeholder="Write your message!"
-                                                class="flex-grow focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 bg-transparent">
-                                            <div id="imagePreview" class="flex items-center">
-                                                <!-- Hình ảnh sẽ được hiển thị ở đây -->
-                                            </div>
+                                        <input id="text__message" type="text" placeholder="Write your message!"
+                                               class="flex-grow focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 bg-transparent">
+                                        <div id="imagePreview" class="flex items-center">
+                                            <!-- Hình ảnh sẽ được hiển thị ở đây -->
                                         </div>
                                     </div>
-
-                                    <button type="submit"
-                                        class="flex items-center justify-center h-max rounded-lg px-3 py-2 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
-                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
-                                            class="h-6 w-6 transform rotate-90">
-                                            <path
-                                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
-                                            </path>
-                                        </svg>
-                                    </button>
                                 </div>
-                            </form>
-                        </div>
+
+                                <button type="submit"
+                                        class="flex items-center justify-center h-max rounded-lg px-3 py-2 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                         class="h-6 w-6 transform rotate-90">
+                                        <path
+                                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                                        </path>
+                                    </svg>
+                                </button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+</div>
 
-    <!-- Modal -->
-    <div id="modal" class="fixed inset-0 bg-gray-800 bg-opacity-50  items-center justify-center hidden">
-        <div class="bg-white rounded-lg p-6 w-96 relative">
-            <button id="closeModalBtn" type="button"
+<!-- Modal -->
+<div id="modal" class="fixed inset-0 bg-gray-800 bg-opacity-50  items-center justify-center hidden">
+    <div class="bg-white rounded-lg p-6 w-96 relative">
+        <button id="closeModalBtn" type="button"
                 class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
-                <img src="../assets/icons/ti-close.svg" class="w-3 h-3" alt="error img">
-            </button>
-            <h2 class="text-xl mb-4">Create New Group</h2>
-            <form action="" id="form__create-group">
-                <div class="w-full relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
-                    <input type="file" class="absolute inset-0 w-full h-full opacity-0 z-50" name="file-upload" />
-                    <div class="text-center">
-                        <img class="mx-auto h-12 w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg"
-                            alt="">
-                        <h3 class="mt-2 text-sm font-medium text-gray-900">
-                            <label for="file-upload" class="relative cursor-pointer">
-                                <span>Drag and drop</span>
-                                <span class="text-indigo-600"> or browse</span>
-                                <span>to upload</span>
-                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
-                            </label>
-                        </h3>
-                        <p class="mt-1 text-xs text-gray-500">
-                            PNG, JPG, GIF up to 10MB
-                        </p>
-                    </div>
-                    <img src="" class="mt-4 mx-auto max-h-40 hidden" id="preview">
+            <img src="../assets/icons/ti-close.svg" class="w-3 h-3" alt="error img">
+        </button>
+        <h2 class="text-xl mb-4">Create New Group</h2>
+        <form action="" id="form__create-group">
+            <div class="w-full relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
+                <input type="file" class="absolute inset-0 w-full h-full opacity-0 z-50" name="file-upload"/>
+                <div class="text-center">
+                    <img class="mx-auto h-12 w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg"
+                         alt="">
+                    <h3 class="mt-2 text-sm font-medium text-gray-900">
+                        <label for="file-upload" class="relative cursor-pointer">
+                            <span>Drag and drop</span>
+                            <span class="text-indigo-600"> or browse</span>
+                            <span>to upload</span>
+                            <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                        </label>
+                    </h3>
+                    <p class="mt-1 text-xs text-gray-500">
+                        PNG, JPG, GIF up to 10MB
+                    </p>
                 </div>
+                <img src="" class="mt-4 mx-auto max-h-40 hidden" id="preview">
+            </div>
 
-                <!-- Thêm thuộc tính name cho input -->
-                <label for="input-group-1" class="block mt-4 mb-2 text-sm font-medium text-gray-900 ">Your Group</label>
-                <div class="relative mb-6">
-                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
-                        <img src="../assets/icons/ti-group-black.svg" class="w-5 h-5" alt="">
-                    </div>
-                    <input type="text" id="input-group-1" name="group-name"
-                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
-                        placeholder="Name group">
+            <!-- Thêm thuộc tính name cho input -->
+            <label for="input-group-1" class="block mt-4 mb-2 text-sm font-medium text-gray-900 ">Your Group</label>
+            <div class="relative mb-6">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                    <img src="../assets/icons/ti-group-black.svg" class="w-5 h-5" alt="">
                 </div>
+                <input type="text" id="input-group-1" name="group-name"
+                       class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                       placeholder="Name group">
+            </div>
 
-                <div class="flex justify-end w-full">
-                    <button
-                        class="text-white  bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">Create</button>
-                </div>
-            </form>
-        </div>
+            <div class="flex justify-end w-full">
+                <button
+                        class="text-white  bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                    Create
+                </button>
+            </div>
+        </form>
     </div>
-    <script>
-        const btnChat = document.querySelector(".btn-chats")
-        const listChat = document.querySelector("#list-chats")
-        const boxChat = document.querySelector("#box-chat")
-        const openModalBtn = document.getElementById('openModalBtn');
-        const modal = document.getElementById('modal');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const dropzone = document.getElementById('dropzone');
+</div>
+<script>
+    const btnChat = document.querySelector(".btn-chats")
+    const listChat = document.querySelector("#list-chats")
+    const boxChat = document.querySelector("#box-chat")
+    const openModalBtn = document.getElementById('openModalBtn');
+    const modal = document.getElementById('modal');
+    const closeModalBtn = document.getElementById('closeModalBtn');
+    const dropzone = document.getElementById('dropzone');
 
-        btnChat.addEventListener("click", (e) => {
-            e.preventDefault();
-            listChat.classList.toggle("hidden")
-            boxChat.classList.toggle("hidden")
-        })
+    btnChat.addEventListener("click", (e) => {
+        e.preventDefault();
+        listChat.classList.toggle("hidden")
+        boxChat.classList.toggle("hidden")
+    })
 
-        openModalBtn.addEventListener('click', () => {
-            modal.style.display = 'flex'; // Hiển thị modal
-        });
+    openModalBtn.addEventListener('click', () => {
+        modal.style.display = 'flex'; // Hiển thị modal
+    });
 
-        closeModalBtn.addEventListener('click', () => {
+    closeModalBtn.addEventListener('click', () => {
+        modal.style.display = 'none'; // Ẩn modal
+    });
+
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
             modal.style.display = 'none'; // Ẩn modal
-        });
-
-        modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-                modal.style.display = 'none'; // Ẩn modal
-            }
-        });
-
-        dropzone.addEventListener('dragover', e => {
-            e.preventDefault();
-            dropzone.classList.add('border-indigo-600');
-        });
-
-        dropzone.addEventListener('dragleave', e => {
-            e.preventDefault();
-            dropzone.classList.remove('border-indigo-600');
-        });
-
-        dropzone.addEventListener('drop', e => {
-            e.preventDefault();
-            dropzone.classList.remove('border-indigo-600');
-            let file = e.dataTransfer.files[0];
-            displayPreview(file);
-        });
-
-        let input = document.getElementById('file-upload');
-
-        input.addEventListener('change', e => {
-            let file = e.target.files[0];
-            displayPreview(file);
-        });
-
-        function displayPreview(file) {
-            let reader = new FileReader();
-            reader.readAsDataURL(file);
-            reader.onload = () => {
-                let preview = document.getElementById('preview');
-                preview.src = reader.result;
-                preview.classList.remove('hidden');
-            };
         }
-    </script>
-    <script type="module" src="../assets/js/createRooms.js"></script>
+    });
+
+    dropzone.addEventListener('dragover', e => {
+        e.preventDefault();
+        dropzone.classList.add('border-indigo-600');
+    });
+
+    dropzone.addEventListener('dragleave', e => {
+        e.preventDefault();
+        dropzone.classList.remove('border-indigo-600');
+    });
+
+    dropzone.addEventListener('drop', e => {
+        e.preventDefault();
+        dropzone.classList.remove('border-indigo-600');
+        let file = e.dataTransfer.files[0];
+        displayPreview(file);
+    });
+
+    let input = document.getElementById('file-upload');
+
+    input.addEventListener('change', e => {
+        let file = e.target.files[0];
+        displayPreview(file);
+    });
+
+    function displayPreview(file) {
+        let reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+            let preview = document.getElementById('preview');
+            preview.src = reader.result;
+            preview.classList.remove('hidden');
+        };
+    }
+</script>
+<script type="module" src="../assets/js/createRooms.js"></script>
 </body>
 
 </html>
