@@ -14,13 +14,13 @@
     <div class="font-roboto bg-[#C9E6F6] min-h-screen">
         <div class="w-full h-full max-w-[1200px] mx-auto xs:px-4 py-[44px]">
             <div
-                class="xs:grid max-h-[800px] flex grid-cols-5 xs:grid-cols-3 gap-1 lg:grid-cols-[120px_3fr] lg:gap-6 overflow-hidden">
+                class="xs:grid flex grid-cols-5 xs:grid-cols-3 gap-1 lg:grid-cols-[120px_3fr] lg:gap-6 overflow-hidden">
                 <!--sidebar-->
                 <div class="min-h-full min-w-[60px] rounded-[25px] overflow-hidden">
                     <div class="flex h-full w-full flex-col items-center border-r border-gray-200 bg-blue-300">
                         <div
-                            class="flex items-center justify-center rounded-full w-[40px] h-[40px] xs:w-[68px] xs:h-[68px] mt-[32px] overflow-hidden">
-                            <img class="img-cover" src="../assets/icons/Ellipse 1.png" />
+                            class="flex items-center justify-center rounded-full w-[40px] h-[40px] xs:w-[68px] xs:h-[68px] mt-[32px] overflow-hidden cursor-pointer">
+                            <img id="my-avatar" class="img-cover" src="../assets/icons/Ellipse 1.png" />
                         </div>
                         <nav class="flex flex-1 flex-col gap-y-6 pt-10">
                             <a href="#" class="text-gary-400 group relative rounded-xl p-2 ">
@@ -41,7 +41,7 @@
                             </a>
                         </nav>
                         <div class="flex flex-col items-center gap-y-4 py-10">
-                            <button class="group relative rounded-xl p-2 text-gray-400 ">
+                            <button id="logout" class="group relative rounded-xl p-2 text-gray-400 ">
                                 <img src="../assets/icons/ti-logout.svg" alt="" class="h-8 w-8 xs:h-10 xs:w-10">
                             </button>
                         </div>
@@ -64,14 +64,13 @@
                                 class="w-full outline-none bg-white text-gray-600 text-sm" />
                         </div>
                         <div
-                            class="max-h-[700px] mt-[18px]  rounded-[25px] flex-grow overflow-y-auto p-[22px] bg-white">
-
-                            <div class="w-full ">
-                                <h3 class="text-[26px] font-bold text-textPrimary">Chats</h3>
-                                <ul class="w-full" id="list__groups">
-
-                                </ul>
-                            </div>
+                            class=" mt-[18px] rounded-[25px] flex-grow py-3 px-1 bg-white">
+                                <h3 class="text-2xl font-semibold tracking-wide text-[#9747ff] px-4 uppercase pb-2">Chats</h3>
+                                <div class="overflow-y-auto max-h-[600px]">
+                                    <ul class="w-full" id="list__groups">
+    
+                                    </ul>
+                                </div>
                         </div>
 
                     </div>
@@ -79,11 +78,11 @@
                     <div id="box-chat"
                         class="h-full xs:flex xs:flex-col bg-white rounded-[24px] lg:col-span-2 py-[24px] px-[35px] w-full">
                         <div class="flex items-center justify-between border-b border-[#B4ABAB] pb-[20px]">
-                            <div class="flex items-center">
+                            <div id="room-info" class="flex items-center">
                                 <img src="../assets/icons/Ellipse 1.png" class="w-[55px] h-[55px] mr-[24px]" alt="">
                                 <div>
-                                    <h5 class="font-semibold text-textPrimary text-[24px]">Anil</h5>
-                                    <p class="font-light text-textPrimary text-sm">Online - Last seen, 2.02pm</p>
+                                    <h5 class="font-semibold text-textPrimary text-2xl">Anil</h5>
+                                    <p class="font-light text-textPrimary">Online - Last seen, 2.02pm</p>
                                 </div>
                             </div>
                             <div class="flex">

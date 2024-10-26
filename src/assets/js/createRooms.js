@@ -1,4 +1,5 @@
 import apiClient from "./axiosConfig.js";
+import Notification from "./notification.js";
 
 let MY_ID = '';
 let CURRENT_ROOM_ID = '';
@@ -204,5 +205,5 @@ formMessage.addEventListener("submit", async (e) => {
 $('#logout')?.addEventListener('click', (e) => {
    localStorage.removeItem('accessToken')
    localStorage.removeItem('userInfo')
-   window.location.href = '../../src/pages/signin.html'
+   Notification('success', 'Đăng xuất thành công!', '../../src/pages/signin.html')
 })
