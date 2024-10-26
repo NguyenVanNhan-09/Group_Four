@@ -1,20 +1,8 @@
 import apiClient from "./axiosConfig.js";
 
-(async () => {
-   try {
-      const res = await apiClient.get('v1/users/verify_token')
-      localStorage.setItem("userInfo", JSON.stringify(res.data.data));
-   } catch (error) {
-      localStorage.removeItem('accessToken')
-      localStorage.removeItem('userInfo')
-      window.location.href = '../../src/pages/signin.html'
-   }
-})();
+let MY_ID = '';
+let CURRENT_ROOM_ID = '';
 
-// localStorage.setItem(
-//    "accessToken",
-//    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3MWE2MDAyOWRmNTBlMzg1MjRkZDk3MyIsImVtYWlsIjoibmhpbWM5eEBnbWFpbC5jb20iLCJ1c2VybmFtZSI6Ikxpc2EiLCJpYXQiOjE3Mjk3ODE4NjMsImV4cCI6MTcyOTg2ODI2M30.AmaSHp13kh9ufsnnXRd9jdER4BzUzvGiz9uDdkUz-LI"
-// );
 const $ = document.querySelector.bind(document);
 
 const formCreateGroup = $("#form__create-group");
@@ -24,6 +12,63 @@ const textInput = $("#text__message");
 const imagePreview = $("#imagePreview");
 const myMessage = $("#my__message");
 const listGroups = $("#list__groups");
+
+(async () => {
+   try {
+      const res = await apiClient.get('/users/verify_token')
+      localStorage.setItem("userInfo", JSON.stringify(res.data.data))
+      MY_ID = res.data.data._id
+      console.log(MY_ID);
+   } catch (error) {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('userInfo')
+      window.location.href = '../../src/pages/signin.html'
+   }
+})();
+
+// Get Grops
+async function getGroups() {
+   try {
+      const response = await apiClient.get("/rooms/get_all");
+      const groups = response.data.data;
+      CURRENT_ROOM_ID = groups[0]._id
+      console.log(CURRENT_ROOM_ID);
+      groups.forEach((room) => {
+         const timestamp = room.createAt;
+         const date = new Date(timestamp);
+         const hours = date.getHours();
+         const minutes = date.getMinutes().toString().padStart(2, "0");
+         const period = hours >= 12 ? "pm" : "am";
+         const formattedHours = hours % 12 || 12;
+         const formattedTime = `${formattedHours}.${minutes}${period}`;
+         const htmls = `
+            <li class="flex items-center border-b border-[#B4ABAB] py-[14px]" >
+               <img src=${room.avatarRoom} class="w-[45px] h-[45px] mr-[16px]"
+                     alt="no img">
+               <div class="flex items-center justify-between w-full">
+                     <div class="flex flex-col">
+                        <h4 class="text-base text-textPrimary font-semibold">${
+                           room.roomName
+                        }</h4>
+                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${
+                           room?.latestMessage?.content || "chưa có tin nhắn nào"
+                        }
+                       </p>
+                     </div>
+                     <div class="flex flex-col items-end">
+                        <p class="text-[12px] text-textPrimary font-light">${formattedTime}</p>
+                     </div>
+               </div>
+            </li>
+         `;
+         listGroups.innerHTML += htmls;
+      });
+   } catch (err) {
+      console.log(err);
+   }
+}
+
+getGroups();
 
 // Tạo group chat
 formCreateGroup.addEventListener("submit", (e) => {
@@ -36,7 +81,7 @@ formCreateGroup.addEventListener("submit", (e) => {
    data.append("roomName", groupName);
    async function createGroup(data) {
       try {
-         const response = await apiClient.post("v1/rooms/create", data, {
+         const response = await apiClient.post("/rooms/create", data, {
             headers: {
                "Content-Type": "multipart/form-data",
             },
@@ -67,15 +112,14 @@ imgInput.addEventListener("change", (event) => {
 const chatWrapperNode = $('#chat-wrapper')
 const moreChatLoadingNode = $('#more-chat-loading')
 const chatContainerNode = $('#chat-container')
-// let MY_ID = '671a60029df50e38524dd973'
-let MY_ID = '671a60289df50e38524dd975'
+
 let currentPage = 1
 let hasMore = true
 let isLoading = false
 
-const getMessagesInRoom = async (page = 1) => {
+const getMessagesInRoom = async (page = 1, roomId) => {
    try {
-      const res = await apiClient.get(`v1/messages/671a60b59df50e38524dd976?page=${page}`)
+      const res = await apiClient.get(`/messages/${roomId}?page=${page}`)
       const data = res.data.data
       if(page === 1) {
          console.log('first', data[data.length - 1])
@@ -86,10 +130,10 @@ const getMessagesInRoom = async (page = 1) => {
    }
 }
 const renderMessages = async (page) => {
-   if (isLoading || !hasMore) return
+   if (isLoading || !hasMore || !MY_ID || !CURRENT_ROOM_ID) return
    isLoading = true
    moreChatLoadingNode.style.display = 'block'
-   const list = await getMessagesInRoom(page)
+   const list = await getMessagesInRoom(page, CURRENT_ROOM_ID)
    if (list.length === 0) {
       hasMore = false
       isLoading = false
@@ -130,6 +174,7 @@ chatContainerNode.addEventListener('scroll', () => {
 
 // tin nhắn mới
 formMessage.addEventListener("submit", async (e) => {
+   if (!CURRENT_ROOM_ID) return
    e.preventDefault();
    const formData = new FormData();
    const messageInput = textInput.value;
@@ -140,7 +185,7 @@ formMessage.addEventListener("submit", async (e) => {
    }
    try {
       const response = await apiClient.post(
-         "v1/messages/671a60b59df50e38524dd976",
+         `/messages/${CURRENT_ROOM_ID}`,
          formData,
          {
             headers: {
@@ -149,58 +194,14 @@ formMessage.addEventListener("submit", async (e) => {
          }
       );
       console.log("Group created:", response.data);
-      const htmls = (myMessage.textContent = messageInput);
+      // const htmls = (myMessage.textContent = messageInput);
    } catch (err) {
       console.log(err);
    }
 });
 
-// Get Grops
-
-async function getGroups() {
-   try {
-      const response = await apiClient.get("v1/rooms/get_all");
-      const groups = response.data.data;
-      groups.forEach((room) => {
-         console.log(room);
-         const timestamp = room.createAt;
-         const date = new Date(timestamp);
-         const hours = date.getHours();
-         const minutes = date.getMinutes().toString().padStart(2, "0");
-         const period = hours >= 12 ? "pm" : "am";
-         const formattedHours = hours % 12 || 12;
-         const formattedTime = `${formattedHours}.${minutes}${period}`;
-         const htmls = `
-            <li class="flex items-center border-b border-[#B4ABAB] py-[14px]" >
-               <img src=${room.avatarRoom} class="w-[45px] h-[45px] mr-[16px]"
-                     alt="no img">
-               <div class="flex items-center justify-between w-full">
-                     <div class="flex flex-col">
-                        <h4 class="text-base text-textPrimary font-semibold">${
-                           room.roomName
-                        }</h4>
-                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${
-                           room?.latestMessage?.content || "chưa có tin nhắn nào"
-                        }
-                       </p>
-                     </div>
-                     <div class="flex flex-col items-end">
-                        <p class="text-[12px] text-textPrimary font-light">${formattedTime}</p>
-                     </div>
-               </div>
-            </li>
-         `;
-         listGroups.innerHTML += htmls;
-      });
-   } catch (err) {
-      console.log(err);
-   }
-}
-
-getGroups();
-
 //button logout
-$('#logout').addEventListener('click', (e) => {
+$('#logout')?.addEventListener('click', (e) => {
    localStorage.removeItem('accessToken')
    localStorage.removeItem('userInfo')
    window.location.href = '../../src/pages/signin.html'

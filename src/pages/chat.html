@@ -7,6 +7,7 @@
     <title>Chat app</title>
     <link rel="stylesheet" href="../assets/css/output.css">
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="module" src="../assets/js/main.js" defer></script>
 </head>
 
 <body>
@@ -96,7 +97,7 @@
 
                         <div class="mt-[14px]">
                             <div id="chat-container" class="h-full min-h-[530px] max-h-[530px] overflow-y-auto pr-2">
-                                <div style="display: none;" id="more-chat-loading" class="py-6">
+                                <div style="display: block;" id="more-chat-loading" class="py-6">
                                     <div class="flex flex-row gap-2 justify-center">
                                         <div class="w-4 h-4 rounded-full bg-primary animate-bounce"></div>
                                         <div
@@ -267,7 +268,6 @@
             };
         }
     </script>
-    <script type="module" src="../assets/js/createRooms.js"></script>
 </body>
 
 </html>
