@@ -1,4 +1,5 @@
 import apiClient from "./axiosConfig.js";
+import Notification from "./notification.js";
 
 (async () => {
    try {
@@ -200,8 +201,8 @@ async function getGroups() {
 getGroups();
 
 //button logout
-$('#logout').addEventListener('click', (e) => {
+$('#logout')?.addEventListener('click', (e) => {
    localStorage.removeItem('accessToken')
    localStorage.removeItem('userInfo')
-   window.location.href = '../../src/pages/signin.html'
+   Notification('success', 'Đăng xuất thành công!', '../../src/pages/signin.html')
 })
