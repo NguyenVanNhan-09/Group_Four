@@ -63,14 +63,14 @@
                             <input type="email" placeholder="Search Something..."
                                 class="w-full outline-none bg-white text-gray-600 text-sm" />
                         </div>
-                        <div
-                            class=" mt-[18px] rounded-[25px] flex-grow py-3 px-1 bg-white">
-                                <h3 class="text-2xl font-semibold tracking-wide text-[#9747ff] px-4 uppercase pb-2">Chats</h3>
-                                <div class="overflow-y-auto max-h-[600px]">
-                                    <ul class="w-full" id="list__groups">
-    
-                                    </ul>
-                                </div>
+                        <div class=" mt-[18px] rounded-[25px] flex-grow py-3 px-1 bg-white">
+                            <h3 class="text-2xl font-semibold tracking-wide text-[#9747ff] px-4 uppercase pb-2">Chats
+                            </h3>
+                            <div class="overflow-y-auto max-h-[600px]">
+                                <ul class="w-full" id="list__groups">
+
+                                </ul>
+                            </div>
                         </div>
 
                     </div>
@@ -85,12 +85,13 @@
                                     <p class="font-light text-textPrimary">Online - Last seen, 2.02pm</p>
                                 </div>
                             </div>
-                            <div class="flex">
-                                <img src="../assets/icons/ti-phone.svg" alt="" class="w-[38px] h-[38px] hidden xs:flex">
+                            <div class="flex items-center">
+                                <img onclick="showModalAddMember()" src="../assets/icons/add_member.svg" alt=""
+                                    class=" cursor-pointer hover:bg-gray-200 rounded-full p-1.5 w-11 h-11 hidden xs:flex">
                                 <img src="../assets/icons/ti-camera.svg" alt=""
-                                    class="w-[38px] h-[38px] mx-[20px] hidden xs:flex">
+                                    class=" cursor-pointer hover:bg-gray-200 rounded-full p-1.5 w-11 h-11 mx-4 hidden xs:flex">
                                 <img src="../assets/icons/ti-option.svg" alt=""
-                                    class="xs:w-[38px] xs:h-[38px] w-6 h-6 ">
+                                    class=" cursor-pointer hover:bg-gray-200 rounded-full p-1.5 xs:w-10 xs:h-10 w-6 h-6 ">
                             </div>
                         </div>
 
@@ -204,6 +205,32 @@
             </form>
         </div>
     </div>
+
+    <!-- Modal thêm member -->
+    <div style="display: none;" id="modal-add-member" class="fixed inset-0 bg-gray-800/20 flex items-center justify-center">
+        <div class="min-w-[350px] bg-white rounded-md">
+            <div class="text-2xl font-semibold text-textPrimary flex items-center justify-between py-2 px-3 border-b">
+                <div>Thêm thành viên</div>
+                <img onclick="closeModalAddMember()" class="size-11 p-2.5 rounded-full hover:bg-gray-300/50"
+                    src="../assets/icons/ti-close.svg" alt="">
+            </div>
+            <div class="min-h-48 px-3 py-4">
+                <form id="form__add-member">
+                    <div
+                        class="w-full rounded-full p-1.5 border border-primary gap-2 flex items-center justify-between">
+                        <input type="text" placeholder="Nhập tên hoặc email" autofocus required class="outline-none flex-1 pl-3">
+                        <button>
+                            <img src="../assets/icons/search-alt-svgrepo-com.svg" class="size-10" alt="">
+                        </button>
+                    </div>
+                </form>
+                <ul id="list__add-member" class="mt-4">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         const btnChat = document.querySelector(".btn-chats")
         const listChat = document.querySelector("#list-chats")
@@ -266,6 +293,15 @@
                 preview.classList.remove('hidden');
             };
         }
+
+        const showModalAddMember = () => {
+            document.getElementById('modal-add-member').style.display = 'flex'
+        }
+
+        const closeModalAddMember = () => {
+            document.getElementById('modal-add-member').style.display = 'none'
+        }
+
     </script>
 </body>
 

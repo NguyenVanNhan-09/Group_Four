@@ -1,4 +1,6 @@
 import apiClient from "./axiosConfig.js"
+import Notification from "./notification.js"
+
 const $ = document.querySelector.bind(document)
 const formCreateGroup = $("#form__create-group")
 const formMessage = $("#form__message")
@@ -12,6 +14,8 @@ const moreChatLoadingNode = $('#more-chat-loading')
 const chatContainerNode = $('#chat-container')
 const myAvatar = $('#my-avatar')
 const roomInfoNode = $('#room-info')
+const formAddMember = $('#form__add-member')
+const listAddMember = $('#list__add-member')
 
 let MY_ID = ''
 let MY_INFO = {
@@ -51,13 +55,16 @@ const getGroups = async () => {
     CURRENT_ROOM_ID = groups[0]?._id
     await renderMessagesInRoom(CURRENT_ROOM_ID)
     const htmls = groups.reduce((acc, room) => {
-      const timestamp = room.createAt;
-      const date = new Date(timestamp);
-      const hours = date.getHours();
-      const minutes = date.getMinutes().toString().padStart(2, "0");
-      const period = hours >= 12 ? "pm" : "am";
-      const formattedHours = hours % 12 || 12;
-      const formattedTime = `${formattedHours}.${minutes}${period}`;
+      let formattedTime = ''
+      if (room.latestMessage?.createAt) {
+        const timestamp = room.latestMessage.createAt;
+        const date = new Date(timestamp);
+        const hours = date.getHours();
+        const minutes = date.getMinutes().toString().padStart(2, "0");
+        const period = hours >= 12 ? " pm" : " am";
+        const formattedHours = hours % 12 || 12;
+        formattedTime = `${formattedHours}:${minutes}${period}`;
+      }
       return acc + `
        <li id="${room._id}" class="flex items-center border-b border-[#b4abab34] py-[14px] cursor-pointer hover:bg-gray-100 px-3 first:bg-[#e5efff]/80 rounded" >
                <div class="size-12 border-[0.5px] mr-[16px] rounded-full flex-shrink-0 overflow-hidden">
@@ -66,11 +73,11 @@ const getGroups = async () => {
                <div class="flex items-center justify-between w-full">
                      <div class="flex flex-col">
                         <h4 class="text-lg text-textPrimary font-semibold line-clamp-1">${room.roomName}</h4>
-                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${room?.latestMessage?.content || "Chưa có tin nhắn nào"}
+                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${room.latestMessage?.message?.content || "Chưa có tin nhắn nào"}
                        </p>
                      </div>
                      <div class="flex flex-col items-end">
-                        <p class="text-[12px] text-textPrimary font-light">${formattedTime}</p>
+                        <p class="text-[12px] text-textPrimary">${formattedTime}</p>
                      </div>
                </div>
             </li>
@@ -97,7 +104,7 @@ const getGroups = async () => {
     })
 
   } catch (error) {
-    console.log(err)
+    console.log(error)
   }
 }
 
@@ -243,6 +250,78 @@ formMessage.addEventListener("submit", async (e) => {
     console.log(err);
   }
 });
+
+// Tạo group chat
+formCreateGroup.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const formData = new FormData(formCreateGroup);
+  const groupName = formData.get("group-name");
+  const file = formData.get("file-upload");
+  const data = new FormData();
+  data.append("image", file);
+  data.append("roomName", groupName);
+  async function createGroup(data) {
+     try {
+        const response = await apiClient.post("/rooms/create", data, {
+           headers: {
+              "Content-Type": "multipart/form-data",
+           },
+        });
+        console.log("Group created:", response.data);
+     } catch (err) {
+        console.log(err);
+     }
+  }
+  createGroup(data);
+});
+
+// Thêm thành viên
+const handleAddMember = async (userId) => {
+  try {
+    const res = await apiClient.put(`/rooms/join/${CURRENT_ROOM_ID}`, {
+      userId: userId
+    })
+    Notification('success', 'Thành viên đã tham gia thành công')
+  } catch (error) {
+    console.log(error);
+    Notification('error', error?.response?.data?.message)
+  }
+}
+
+// Tìm thành viên
+formAddMember.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  const keyWord = formAddMember.querySelector('input').value
+  const response = await apiClient.get(`/users/search?q=${keyWord}`)
+
+  console.log(response.data.data)
+
+  const users = response.data.data
+  if (users.length === 0) {
+    Notification('error', 'Không tìm thấy user nào')
+    listAddMember.innerHTML = `<div class="text-center text-textPrimary font-light mt-4 text-lg">Không tìm thấy user nào</div>`
+    return
+  }
+  const htmls = users.reduce((acc, user) => {
+    return acc + `
+      <li id="${user.id}" class="flex items-center gap-3 mb-2 text-lg hover:bg-gray-200 p-2 rounded-md">
+        <div class="size-12 rounded-full overflow-hidden">
+          <img src="${user.avatar}" class="img-cover" alt="">
+        </div>
+        <div>${user.username}</div>
+        <img id="btn_add_this_member" src="../assets/icons/add.svg" alt="" class="size-10 rounded-full hover:bg-primary/10 ml-auto">
+      </li>
+    `
+  }, '')
+  listAddMember.innerHTML = htmls;
+
+  [...listAddMember.children].forEach(item => {
+    item.querySelector('#btn_add_this_member').addEventListener('click', () => {
+      handleAddMember(item.id)
+    })
+  })
+
+})
 
 // Handle logout
 $('#logout')?.addEventListener('click', (e) => {
