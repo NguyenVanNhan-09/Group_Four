@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat app</title>
+    <link rel="stylesheet" href="../assets/css/output.css">
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script type="module" src="../assets/js/main.js" defer></script>
+</head>
+
+<body>
+    <div class="font-roboto bg-[#C9E6F6] min-h-screen">
+        <div class="w-full h-full max-w-[1200px] mx-auto xs:px-4 py-[44px]">
+            <div
+                class="xs:grid flex grid-cols-5 xs:grid-cols-3 gap-1 lg:grid-cols-[120px_3fr] lg:gap-6 overflow-hidden">
+                <!--sidebar-->
+                <div class="min-h-full min-w-[60px] rounded-[25px] overflow-hidden">
+                    <div class="flex h-full w-full flex-col items-center border-r border-gray-200 bg-blue-300">
+                        <div
+                            class="flex items-center justify-center rounded-full w-[40px] h-[40px] xs:w-[68px] xs:h-[68px] mt-[32px] overflow-hidden cursor-pointer">
+                            <img id="my-avatar" class="img-cover" src="../assets/icons/Ellipse 1.png" />
+                        </div>
+                        <nav class="flex flex-1 flex-col gap-y-6 pt-10">
+                            <a href="#" class="text-gary-400 group relative rounded-xl p-2 ">
+                                <img src="../assets/icons/ti-home.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
+                                    alt="">
+                            </a>
+                            <a href="#" class="btn-chats text-gary-400 group relative rounded-xl p-2 ">
+                                <img src="../assets/icons/ti-chat.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
+                                    alt="">
+                            </a>
+                            <button id="openModalBtn" class="text-gary-400 group relative rounded-xl p-2 ">
+                                <img src="../assets/icons/ti-group.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
+                                    alt="">
+                            </button>
+                            <button id="openModalSearchBtn" class="text-gary-400 group relative rounded-xl p-2 ">
+                                <img src="../assets/icons/s-g-w.png" class="xs:h-12 xs:w-12 h-11 w-11 stroke-current"
+                                    alt="">
+                            </button>
+                        </nav>
+                        <div class="flex flex-col items-center gap-y-4 py-10">
+                            <button id="logout" class="group relative rounded-xl p-2 text-gray-400 ">
+                                <img src="../assets/icons/ti-logout.svg" alt="" class="h-8 w-8 xs:h-10 xs:w-10">
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 gap-1 lg:grid-cols-3 lg:gap-6 w-full">
+                    <!--List Chats-->
+                    <div id="list-chats" class="h-full xs:flex-col xs:flex w-full col-span-1 hidden">
+                        <!-- sreach -->
+                        <div
+                            class="flex px-4 w-full py-3 rounded-[18px] bg-white shadow-custom overflow-hidden border-none max-w-full mx-auto">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 192.904 192.904" width="16px"
+                                class="fill-gray-600 mr-3 rotate-90">
+                                <path
+                                    d="m190.707 180.101-47.078-47.077c11.702-14.072 18.752-32.142 18.752-51.831C162.381 36.423 125.959 0 81.191 0 36.422 0 0 36.423 0 81.193c0 44.767 36.422 81.187 81.191 81.187 19.688 0 37.759-7.049 51.831-18.751l47.079 47.078a7.474 7.474 0 0 0 5.303 2.197 7.498 7.498 0 0 0 5.303-12.803zM15 81.193C15 44.694 44.693 15 81.191 15c36.497 0 66.189 29.694 66.189 66.193 0 36.496-29.692 66.187-66.189 66.187C44.693 147.38 15 117.689 15 81.193z">
+                                </path>
+                            </svg>
+                            <input type="email" placeholder="Search Something..."
+                                class="w-full outline-none bg-white text-gray-600 text-sm" />
+                        </div>
+                        <div class=" mt-[18px] rounded-[25px] flex-grow py-3 px-1 bg-white">
+                            <h3 class="text-2xl font-semibold tracking-wide text-[#9747ff] px-4 uppercase pb-2">Chats
+                            </h3>
+                            <div class="overflow-y-auto max-h-[600px]">
+                                <ul class="w-full" id="list__groups">
+
+                                </ul>
+                            </div>
+                        </div>
+
+                    </div>
+                    <!--Box chat-->
+                    <div id="box-chat"
+                        class="h-full xs:flex xs:flex-col bg-white rounded-[24px] lg:col-span-2 py-[24px] px-[35px] w-full">
+                        <div class="flex items-center justify-between border-b border-[#B4ABAB] pb-[20px]">
+                            <div id="room-info" class="flex items-center">
+                            </div>
+                            <div class="flex items-center">
+                                <img onclick="showModalAddMember()" src="../assets/icons/add_member.svg" alt=""
+                                    class=" cursor-pointer hover:bg-gray-200 rounded-full p-1.5 w-11 h-11 hidden xs:flex">
+                                <img src="../assets/icons/ti-camera.svg" alt=""
+                                    class=" cursor-pointer hover:bg-gray-200 rounded-full p-1.5 w-11 h-11 mx-4 hidden xs:flex">
+                                <img src="../assets/icons/ti-option.svg" alt=""
+                                    class=" cursor-pointer hover:bg-gray-200 rounded-full p-1.5 xs:w-10 xs:h-10 w-6 h-6 ">
+                            </div>
+                        </div>
+
+                        <div class="mt-[14px]">
+                            <div id="chat-container" class="h-full min-h-[530px] max-h-[530px] overflow-y-auto pr-2">
+                                <div style="display: block;" id="more-chat-loading" class="py-6">
+                                    <div class="flex flex-row gap-2 justify-center">
+                                        <div class="w-4 h-4 rounded-full bg-primary animate-bounce"></div>
+                                        <div
+                                            class="w-4 h-4 rounded-full bg-primary animate-bounce [animation-delay:-.3s]">
+                                        </div>
+                                        <div
+                                            class="w-4 h-4 rounded-full bg-primary animate-bounce [animation-delay:-.5s]">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="chat-wrapper">
+                                </div>
+                            </div>
+                            <form action="" id="form__message">
+                                <div class="flex items-center gap-[18px] mt-[24px]">
+                                    <div class="relative flex items-center w-full">
+                                        <span class="absolute inset-y-0 flex items-center">
+                                            <label for="img__message" type="button"
+                                                class="inline-flex items-center justify-center rounded-full h-10 w-10 transition duration-500 ease-in-out text-gray-500 hover:bg-gray-300 focus:outline-none">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                    stroke="currentColor" class="h-6 w-6 text-gray-600">
+                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                        stroke-width="2"
+                                                        d="M15.172 7l-6.586 6.586a2 2 0 102.828 2.828l6.414-6.586a4 4 0 00-5.656-5.656l-6.415 6.585a6 6 0 108.486 8.486L20.5 13">
+                                                    </path>
+                                                </svg>
+                                            </label>
+                                            <input id="img__message" type="file" class="hidden" accept="image/*">
+                                        </span>
+                                        <div
+                                            class="flex items-center bg-gray-200 rounded-[25px] py-3 pl-10 pr-4 w-full">
+                                            <input id="text__message" type="text" placeholder="Write your message!"
+                                                class="flex-grow focus:outline-none focus:placeholder-gray-400 text-gray-600 placeholder-gray-600 bg-transparent">
+                                            <div id="imagePreview" class="flex items-center">
+                                                <!-- Hình ảnh sẽ được hiển thị ở đây -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <button type="submit"
+                                        class="flex items-center justify-center h-max rounded-lg px-3 py-2 transition duration-500 ease-in-out text-white bg-blue-500 hover:bg-blue-400 focus:outline-none">
+                                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+                                            class="h-6 w-6 transform rotate-90">
+                                            <path
+                                                d="M10.894 2.553a1 1 0 00-1.788 0l-7 14a1 1 0 001.169 1.409l5-1.429A1 1 0 009 15.571V11a1 1 0 112 0v4.571a1 1 0 00.725.962l5 1.428a1 1 0 001.17-1.408l-7-14z">
+                                            </path>
+                                        </svg>
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Modal create group -->
+    <div id="modal" class="fixed inset-0 bg-gray-800 bg-opacity-50  items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-96 relative">
+            <button id="closeModalBtn" type="button"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                <img src="../assets/icons/ti-close.svg" class="w-3 h-3" alt="error img">
+            </button>
+            <h2 class="text-xl mb-4">Create New Group</h2>
+            <form action="" id="form__create-group">
+                <div class="w-full relative border-2 border-gray-300 border-dashed rounded-lg p-6" id="dropzone">
+                    <input type="file" class="absolute inset-0 w-full h-full opacity-0 z-50" name="file-upload" />
+                    <div class="text-center">
+                        <img class="mx-auto h-12 w-12" src="https://www.svgrepo.com/show/357902/image-upload.svg"
+                            alt="">
+                        <h3 class="mt-2 text-sm font-medium text-gray-900">
+                            <label for="file-upload" class="relative cursor-pointer">
+                                <span>Drag and drop</span>
+                                <span class="text-indigo-600"> or browse</span>
+                                <span>to upload</span>
+                                <input id="file-upload" name="file-upload" type="file" class="sr-only">
+                            </label>
+                        </h3>
+                        <p class="mt-1 text-xs text-gray-500">
+                            PNG, JPG, GIF up to 10MB
+                        </p>
+                    </div>
+                    <img src="" class="mt-4 mx-auto max-h-40 hidden" id="preview">
+                </div>
+
+                <!-- Thêm thuộc tính name cho input -->
+                <label for="2" class="block mt-4 mb-2 text-sm font-medium text-gray-900 ">Your Group</label>
+                <div class="relative mb-6">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                        <img src="../assets/icons/ti-group-black.svg" class="w-5 h-5" alt="">
+                    </div>
+                    <input type="text" id="input-group-1" name="group-name"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                        placeholder="Name group">
+                </div>
+
+                <div class="flex justify-end w-full">
+                    <button
+                        class="text-white  bg-gradient-to-r from-cyan-500 to-blue-500 hover:bg-gradient-to-bl focus:ring-4 focus:outline-none focus:ring-cyan-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center me-2 mb-2">
+                        Create
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal thêm member -->
+    <div style="display: none;" id="modal-add-member"
+        class="fixed inset-0 bg-gray-800/20 flex items-center justify-center">
+        <div class="min-w-[350px] bg-white rounded-md">
+            <div class="text-2xl font-semibold text-textPrimary flex items-center justify-between py-2 px-3 border-b">
+                <div>Thêm thành viên</div>
+                <img onclick="closeModalAddMember()" class="size-11 p-2.5 rounded-full hover:bg-gray-300/50"
+                    src="../assets/icons/ti-close.svg" alt="">
+            </div>
+            <div class="min-h-48 px-3 py-4">
+                <form id="form__add-member">
+                    <div
+                        class="w-full rounded-full p-1.5 border border-primary gap-2 flex items-center justify-between">
+                        <input type="text" placeholder="Nhập tên hoặc email" autofocus required
+                            class="outline-none flex-1 pl-3">
+                        <button>
+                            <img src="../assets/icons/search-alt-svgrepo-com.svg" class="size-10" alt="">
+                        </button>
+                    </div>
+                </form>
+                <ul id="list__add-member" class="mt-4">
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal search group -->
+    <div id="modalSearch" class="fixed inset-0 bg-gray-800 bg-opacity-50  items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-96 relative">
+            <button id="closeModalSearchBtn" type="button"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                <img src="../assets/icons/ti-close.svg" class="w-3 h-3" alt="error img">
+            </button>
+            <h2 class="text-xl mb-4">Join Group</h2>
+            <form action="" id="form__search-group">
+                <div class="relative mb-6 flex">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                        <img src="../assets/icons/ti-group-black.svg" class="w-5 h-5" alt="">
+                    </div>
+                    <input type="text" id="input-group-2" name="group-name"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                        placeholder="Nhập id nhóm" required>
+                    <button type="submit"
+                        class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <ul id="listSearchGroup" class="">
+                <!-- hiển thị danh sách -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Modal thông tin group -->
+    <div style="display: none;" id="modal-group-info" class="fixed inset-0 bg-gray-800/20 flex items-center justify-center">
+        <div class="min-w-[360px] bg-white rounded-md">
+            <div class="text-2xl font-semibold text-textPrimary flex items-center justify-between py-2 px-3 border-b">
+                <div>Thông tin nhóm</div>
+                <img onclick="closeModalGroupInfo()" class="size-11 p-2.5 rounded-full hover:bg-gray-300/50"
+                    src="../assets/icons/ti-close.svg" alt="">
+            </div>
+            <div id="room-info__detail" class="py-2">
+                
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <script>
+        const btnChat = document.querySelector(".btn-chats")
+        const listChat = document.querySelector("#list-chats")
+        const boxChat = document.querySelector("#box-chat")
+        const dropzone = document.getElementById('dropzone');
+
+
+        const openModalBtn = document.getElementById('openModalBtn');
+        const modal = document.getElementById('modal');
+        const closeModalBtn = document.getElementById('closeModalBtn');
+        const formCreateGroup = document.getElementById('form__create-group');
+
+        const openModalSearchBtn = document.getElementById('openModalSearchBtn');
+        const modalSearch = document.getElementById('modalSearch');
+        const closeModalSearchBtn = document.getElementById('closeModalSearchBtn');
+
+
+        btnChat.addEventListener("click", (e) => {
+            e.preventDefault();
+            listChat.classList.toggle("hidden")
+            boxChat.classList.toggle("hidden")
+        })
+
+        openModalBtn.addEventListener('click', () => {
+            modal.style.display = 'flex'; // Hiển thị modal
+        });
+
+        closeModalBtn.addEventListener('click', () => {
+            modal.style.display = 'none'; // Ẩn modal
+        });
+
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        });
+
+        formCreateGroup.addEventListener('submit', (e) => {
+            modal.style.display = 'none';
+        })
+
+        // modal search
+        openModalSearchBtn.addEventListener('click', () => {
+            modalSearch.style.display = 'flex'; // Hiển thị modal
+        });
+
+        closeModalSearchBtn.addEventListener('click', () => {
+            modalSearch.style.display = 'none'; // Ẩn modal
+        });
+
+        modalSearch.addEventListener('click', (event) => {
+            if (event.target === modalSearch) {
+                modalSearch.style.display = 'none';
+            }
+        });
+
+
+
+
+        // drop img
+        dropzone.addEventListener('dragover', e => {
+            e.preventDefault();
+            dropzone.classList.add('border-indigo-600');
+        });
+
+        dropzone.addEventListener('dragleave', e => {
+            e.preventDefault();
+            dropzone.classList.remove('border-indigo-600');
+        });
+
+        dropzone.addEventListener('drop', e => {
+            e.preventDefault();
+            dropzone.classList.remove('border-indigo-600');
+            let file = e.dataTransfer.files[0];
+            displayPreview(file);
+        });
+
+        let input = document.getElementById('file-upload');
+
+        input.addEventListener('change', e => {
+            let file = e.target.files[0];
+            displayPreview(file);
+        });
+
+        function displayPreview(file) {
+            let reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => {
+                let preview = document.getElementById('preview');
+                preview.src = reader.result;
+                preview.classList.remove('hidden');
+            };
+        }
+
+        const showModalAddMember = () => {
+            document.getElementById('modal-add-member').style.display = 'flex'
+        }
+
+        const closeModalAddMember = () => {
+            document.getElementById('modal-add-member').style.display = 'none'
+        }
+
+        const showModalGroupInfo = () => {
+            document.getElementById('modal-group-info').style.display = 'flex'
+        }
+        const closeModalGroupInfo = () => {
+            document.getElementById('modal-group-info').style.display = 'none'
+        }
+
+    </script>
+</body>
+
+</html>

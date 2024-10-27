@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Đăng Kí</title>
+  <link rel="stylesheet" href="../assets/css/output.css">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="../assets/js/auth.js" defer type="module"></script>
+
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+<div class="w-full max-w-md p-8 space-y-6 bg-white shadow-lg rounded-lg">
+  <h2 class="text-3xl font-extrabold text-center text-gray-900 pb-5">Đăng Kí</h2>
+
+  <form id="form-signup" class="space-y-6">
+    <div>
+      <label for="user-name" class="block text-sm font-medium text-gray-700"></label>
+      <input id="user-name" name="username" type="text"
+             class="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block"
+             placeholder="Tên Người Dùng">
+      <div class="error text-red-500" id="error-username"></div>
+    </div>
+
+    <div>
+      <label for="email" class="block text-sm font-medium text-gray-700"></label>
+      <input id="email" name="email" type="text"
+             class="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block"
+             placeholder="Email">
+      <div class="error text-red-500" id="error-email"></div>
+    </div>
+
+    <div>
+      <label for="password" class="block text-sm font-medium text-gray-700"></label>
+      <input id="password" name="password" type="password"
+             class="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block"
+             placeholder="Mật Khẩu">
+      <div class="error text-red-500" id="error-password"></div>
+    </div>
+
+    <div>
+      <input id="confirm-password" name="confirm-password" type="password"
+             class="w-full mt-2 px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500 block"
+             placeholder="Xác Nhận Mật Khẩu">
+      <div class="error text-red-500" id="error-confirm-password"></div>
+    </div>
+
+    <div class="pt-14">
+      <button type="submit"
+              class="w-full px-4 py-2 text-white bg-indigo-600 rounded-md shadow-sm hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2">
+        Đăng Kí
+      </button>
+    </div>
+  </form>
+  <p class="text-center text-sm text-gray-600">Đã có tài khoản?
+    <a id="signin-link" href="#" class="text-indigo-600 hover:text-indigo-500">Đăng nhập</a>
+  </p>
+  </div>
+
+  <div id="success-modal" class="fixed flex items-center justify-center bg-opacity-50 inset-0 hidden">
+    <div class="bg-primary p-6 w-80 text-center">
+      <h2 class="text-lg text-white font-semibold mb-4">Đăng ký thành công!</h2>
+      <a href="signin.html" id="login-now-btn" class="bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500">
+        Đăng nhập ngay
+      </a>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
