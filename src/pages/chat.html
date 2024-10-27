@@ -213,7 +213,7 @@
                 <img src="../assets/icons/ti-close.svg" class="w-3 h-3" alt="error img">
             </button>
             <h2 class="text-xl mb-4">Search Group</h2>
-            <form action="" id="form__create-group">
+            <form action="" id="form__search-group">
                 <div class="relative mb-6 flex">
                     <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
                         <img src="../assets/icons/ti-group-black.svg" class="w-5 h-5" alt="">
@@ -253,6 +253,7 @@
         const openModalBtn = document.getElementById('openModalBtn');
         const modal = document.getElementById('modal');
         const closeModalBtn = document.getElementById('closeModalBtn');
+        const formCreateGroup = document.getElementById('form__create-group');
 
         const openModalSearchBtn = document.getElementById('openModalSearchBtn');
         const modalSearch = document.getElementById('modalSearch');
@@ -278,6 +279,10 @@
                 modal.style.display = 'none';
             }
         });
+
+        formCreateGroup.addEventListener('submit', (e) => {
+            modal.style.display = 'none';
+        })
 
         // modal search
         openModalSearchBtn.addEventListener('click', () => {
