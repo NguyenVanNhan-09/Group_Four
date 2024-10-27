@@ -34,10 +34,10 @@
                                 <img src="../assets/icons/ti-group.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
                                     alt="">
                             </button>
-                            <a href="#" class="text-gary-400 group relative rounded-xl p-2 ">
+                            <button id="openModalSearchBtn" class="text-gary-400 group relative rounded-xl p-2 ">
                                 <img src="../assets/icons/ti-setting.svg" class="xs:h-10 xs:w-10 h-8 w-8 stroke-current"
                                     alt="">
-                            </a>
+                            </button>
                         </nav>
                         <div class="flex flex-col items-center gap-y-4 py-10">
                             <button id="logout" class="group relative rounded-xl p-2 text-gray-400 ">
@@ -155,7 +155,7 @@
     </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Modal create group -->
     <div id="modal" class="fixed inset-0 bg-gray-800 bg-opacity-50  items-center justify-center hidden">
         <div class="bg-white rounded-lg p-6 w-96 relative">
             <button id="closeModalBtn" type="button"
@@ -204,14 +204,60 @@
             </form>
         </div>
     </div>
+
+    <!-- Modal search group -->
+    <div id="modalSearch" class="fixed inset-0 bg-gray-800 bg-opacity-50  items-center justify-center hidden">
+        <div class="bg-white rounded-lg p-6 w-96 relative">
+            <button id="closeModalSearchBtn" type="button"
+                class="absolute top-3 end-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center">
+                <img src="../assets/icons/ti-close.svg" class="w-3 h-3" alt="error img">
+            </button>
+            <h2 class="text-xl mb-4">Search Group</h2>
+            <form action="" id="form__create-group">
+                <div class="relative mb-6 flex">
+                    <div class="absolute inset-y-0 start-0 flex items-center ps-3.5 pointer-events-none">
+                        <img src="../assets/icons/ti-group-black.svg" class="w-5 h-5" alt="">
+                    </div>
+                    <input type="text" id="input-group-1" name="group-name"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full ps-10 p-2.5"
+                        placeholder="Name group">
+                    <button type="submit"
+                        class="p-2.5 ms-2 text-sm font-medium text-white bg-blue-700 rounded-lg border border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300">
+                        <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none"
+                            viewBox="0 0 20 20">
+                            <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                        </svg>
+                    </button>
+                </div>
+            </form>
+            <ul id="listSearchGroup" class="">
+                <li class="flex justify-between items-center cursor-pointer">
+                    <div class="flex items-center gap-4">
+                        <img src="https://cdn.galaxycine.vn/media/2020/9/5/venom-3_1599315917242.jpg"
+                            class="w-10 h-10 rounded-full" alt="">
+                        <p class="text-gray-600 text-base">Group 1</p>
+                    </div>
+                    <span><img src="../assets/icons/ti-arrow-r.svg" alt=""></span>
+                </li>
+            </ul>
+        </div>
+    </div>
     <script>
         const btnChat = document.querySelector(".btn-chats")
         const listChat = document.querySelector("#list-chats")
         const boxChat = document.querySelector("#box-chat")
+        const dropzone = document.getElementById('dropzone');
+
+
         const openModalBtn = document.getElementById('openModalBtn');
         const modal = document.getElementById('modal');
         const closeModalBtn = document.getElementById('closeModalBtn');
-        const dropzone = document.getElementById('dropzone');
+
+        const openModalSearchBtn = document.getElementById('openModalSearchBtn');
+        const modalSearch = document.getElementById('modalSearch');
+        const closeModalSearchBtn = document.getElementById('closeModalSearchBtn');
+
 
         btnChat.addEventListener("click", (e) => {
             e.preventDefault();
@@ -229,10 +275,29 @@
 
         modal.addEventListener('click', (event) => {
             if (event.target === modal) {
-                modal.style.display = 'none'; // Ẩn modal
+                modal.style.display = 'none';
             }
         });
 
+        // modal search
+        openModalSearchBtn.addEventListener('click', () => {
+            modalSearch.style.display = 'flex'; // Hiển thị modal
+        });
+
+        closeModalSearchBtn.addEventListener('click', () => {
+            modalSearch.style.display = 'none'; // Ẩn modal
+        });
+
+        modalSearch.addEventListener('click', (event) => {
+            if (event.target === modalSearch) {
+                modalSearch.style.display = 'none';
+            }
+        });
+
+
+
+
+        // drop img
         dropzone.addEventListener('dragover', e => {
             e.preventDefault();
             dropzone.classList.add('border-indigo-600');
