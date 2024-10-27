@@ -13,9 +13,16 @@ const chatWrapperNode = $('#chat-wrapper')
 const moreChatLoadingNode = $('#more-chat-loading')
 const chatContainerNode = $('#chat-container')
 const myAvatar = $('#my-avatar')
-const roomInfoNode = $('#room-info')
 const formAddMember = $('#form__add-member')
 const listAddMember = $('#list__add-member')
+const formSeachGroup = $('#form__search-group')
+const roomId = $('#input-group-2')
+const listSearchGroup = $('#listSearchGroup')
+const modalSearch = $('#modalSearch')
+const btnLeaveGroup = $('#btn-leave-group')
+const modalGroupInfo = $('#modal-group-info')
+const roomInfoNode = $('#room-info')
+const roomInfoDetailNode = $('#room-info__detail')
 
 let MY_ID = ''
 let MY_INFO = {
@@ -43,6 +50,7 @@ const checkUser = async () => {
 
 // RENDER GIAO DIỆN
 let CURRENT_ROOM_ID = ''
+let LATEST_MESS_MEMORY = ''
 let currentPage = 1
 let hasMore = true
 let isLoading = false
@@ -65,6 +73,10 @@ const getGroups = async () => {
         const formattedHours = hours % 12 || 12;
         formattedTime = `${formattedHours}:${minutes}${period}`;
       }
+      let latestMess = 'Chưa có tin nhắn nào'
+      if (room.latestMessage?.message) {
+        latestMess = room.latestMessage.message.type === 'text' ? room.latestMessage.message.content : 'Đã gửi hình ảnh'
+      }
       return acc + `
        <li id="${room._id}" class="flex items-center border-b border-[#b4abab34] py-[14px] cursor-pointer hover:bg-gray-100 px-3 first:bg-[#e5efff]/80 rounded" >
                <div class="size-12 border-[0.5px] mr-[16px] rounded-full flex-shrink-0 overflow-hidden">
@@ -73,10 +85,10 @@ const getGroups = async () => {
                <div class="flex items-center justify-between w-full">
                      <div class="flex flex-col">
                         <h4 class="text-lg text-textPrimary font-semibold line-clamp-1">${room.roomName}</h4>
-                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${room.latestMessage?.message?.content || "Chưa có tin nhắn nào"}
+                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${latestMess}
                        </p>
                      </div>
-                     <div class="flex flex-col items-end">
+                     <div class="flex flex-col items-end flex-shrink-0">
                         <p class="text-[12px] text-textPrimary">${formattedTime}</p>
                      </div>
                </div>
@@ -112,7 +124,7 @@ const getGroups = async () => {
 const renderRoomInfo = async (data) => {
   console.log(data);
   roomInfoNode.innerHTML = `
-  <div class="flex items-center">
+  <div class="flex items-center cursor-pointer">
       <img src="${data.avatarRoom}" class="w-[55px] h-[55px] mr-[24px] rounded-full" alt="">
       <div>
         <h5 class="font-semibold text-textPrimary text-2xl">${data.roomName}</h5>
@@ -120,7 +132,68 @@ const renderRoomInfo = async (data) => {
       </div>
     </div>
   `
+  roomInfoDetailNode.innerHTML = `
+  <div class="flex flex-col items-center gap-2 py-2">
+                    <div class="size-20 rounded-full overflow-hidden">
+                        <img class="img-cover"
+                            src="${data.avatarRoom}" alt="">
+                    </div>
+                    <div class="text-2xl font-semibold text-textPrimary">${data.roomName}</div>
+                </div>
+                <div class="border-b-4 border-t-4 p-3">
+                    <div class="">Thành viên (${data.members.length})</div>
+                    <ul class="max-h-[200px] overflow-y-auto mt-2">
+                        <li class="flex items-center gap-4 border-b py-1">
+                            <div class="size-12 rounded-full overflow-hidden">
+                                <img src="https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/25/1220914/Rose.jpg"
+                                    class="img-cover" alt="">
+                            </div>
+                            <p class="text-gray-600 text-base">Nhóm 444</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="py-3 px-1 space-y-1">
+                    <div class="flex items-center gap-4 hover:bg-gray-100 cursor-pointer p-2 rounded-md">
+                        <img class="size-8" src="../assets/icons/link-alt-1-svgrepo-com.svg" alt="">
+                        <div class="flex flex-col justify-between text-textPrimary">
+                            <div class="text-lg font-medium">Id nhóm</div>
+                            <div class="text-primary">${data._id}</div>
+                        </div>
+                    </div>
+                    <div id="btn-leave-group" class="flex items-center gap-4 hover:bg-gray-100 cursor-pointer p-2 rounded-md">
+                        <img class="size-8" src="../assets/icons/session-leave-svgrepo-com.svg" alt="">
+                        <div class="text-lg font-medium text-red-500">Rời nhóm</div>
+                    </div>
+                </div>
+
+  `
+  const renderMembersHtmlStr = data.members.reduce((acc, member) => {
+    return acc + `
+    <li class="flex items-center gap-4 border-b py-1">
+        <div class="size-12 rounded-full overflow-hidden">
+            <img src="https://media-cdn-v2.laodong.vn/storage/newsportal/2023/7/25/1220914/Rose.jpg"
+                class="img-cover" alt="">
+        </div>
+        <p class="text-gray-600 text-base">${member.userName}</p>
+    </li>
+    `
+  }, '')
+  roomInfoDetailNode.querySelector('ul').innerHTML = renderMembersHtmlStr
+  roomInfoDetailNode.querySelector('#btn-leave-group').addEventListener('click', async (e) => {
+    try {
+      const res = await apiClient.put(`/rooms/leave/${CURRENT_ROOM_ID}`)
+      Notification('success', res.data.message)
+      getGroups()
+    } catch (error) {
+      console.log(error)
+      Notification('error', error.response.data.message)
+    }
+  })
 }
+
+roomInfoNode.addEventListener('click', () => {
+  modalGroupInfo.style.display = 'flex'
+})
 
 // 3, Render tin nhắn trong group
 const renderMessagesInRoom = async (roomId, page = 1) => {
@@ -131,6 +204,7 @@ const renderMessagesInRoom = async (roomId, page = 1) => {
     const res = await apiClient.get(`/messages/${roomId}?page=${page}`)
     renderRoomInfo(res.data.roomInfo)
     const messagesData = res.data.data
+    if (page === 1) LATEST_MESS_MEMORY = messagesData[0]?._id
     if (!messagesData.length) {
       page === 1 && (chatWrapperNode.innerHTML = '<p class="text-center text-textPrimary font-light mt-4 text-lg">Chưa có tin nhắn nào trong group này</p>')
       hasMore = false
@@ -181,6 +255,52 @@ chatContainerNode.addEventListener('scroll', () => {
     renderMessagesInRoom(CURRENT_ROOM_ID, currentPage)
   }
 })
+
+// Realtime
+const handleUpdateMessageRealTime = async (roomId) => {
+  if (currentPage !== 1) return
+  try {
+    const res = await apiClient.get(`/messages/${roomId}?page=1`)
+    const data = res.data.data
+    let currentLatestMessage = data[0]?._id
+    if (!LATEST_MESS_MEMORY || currentLatestMessage === LATEST_MESS_MEMORY) {
+      LATEST_MESS_MEMORY = currentLatestMessage
+      return
+    }
+    console.log('Update');
+    const index = res.data.data.findIndex(item => item._id === LATEST_MESS_MEMORY)
+    if (index === -1) return
+    data.splice(index)
+    data.forEach(item => {
+      const messageElement = document.createElement('div')
+      if (MY_ID === item.userInfo.userId) return
+      messageElement.className = `flex mb-4 gap-2.5 cursor-pointer text-white *:bg-gray-400`
+      messageElement.innerHTML = `
+            <div class="size-9 rounded-full">
+               <img src="${item.userInfo.avatar}"
+                     alt="My Avatar" class="size-full object-cover rounded-full">
+            </div>
+            <div class="max-w-96 rounded-lg p-3">
+               ${item.message.type === 'text' ? `<p>${item.message.content}</p>` : `<img class="max-w-60" src="${item.message.content}" alt="">`}
+            </div>
+      `
+      chatWrapperNode.append(messageElement)
+      chatContainerNode.scrollTo({
+        top: chatContainerNode.scrollHeight,
+        behavior: "smooth",
+      })
+    })
+    LATEST_MESS_MEMORY = currentLatestMessage
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+let REAL_TIME_UPDATE_MESSAGE = setInterval(() => {
+  handleUpdateMessageRealTime(CURRENT_ROOM_ID)
+}, 2000)
+// clearInterval(REAL_TIME_UPDATE_MESSAGE)
+
 // END RENDER GIAO DIỆN
 
 imgInput.addEventListener("change", (event) => {
@@ -261,19 +381,59 @@ formCreateGroup.addEventListener("submit", (e) => {
   data.append("image", file);
   data.append("roomName", groupName);
   async function createGroup(data) {
-     try {
-        const response = await apiClient.post("/rooms/create", data, {
-           headers: {
-              "Content-Type": "multipart/form-data",
-           },
-        });
-        console.log("Group created:", response.data);
-     } catch (err) {
-        console.log(err);
-     }
+    try {
+      const response = await apiClient.post("/rooms/create", data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      Notification("success", response.data.message);
+      getGroups()
+    } catch (err) {
+      console.log(err);
+      Notification("error", err.response.data.message);
+    }
   }
   createGroup(data);
 });
+
+
+// Search group
+formSeachGroup.addEventListener('submit', async (e) => {
+  e.preventDefault()
+  console.log(roomId.value);
+  try {
+    const res = await apiClient.get(`/rooms//detail/${roomId.value}`)
+    let rooms = res.data.data
+    listSearchGroup.innerHTML = `
+        <li id="${rooms._id}" class="flex justify-between items-center cursor-pointer">
+          <div class="flex items-center gap-4">
+            <img src="${rooms.avatarRoom}"
+                class="w-10 h-10 rounded-full" alt="">
+            <p class="text-gray-600 text-base">${rooms.roomName}</p>
+          </div>
+          <span id="btn-join-group"><img src="../assets/icons/ti-arrow-r.svg" alt=""></span>
+        </li>
+    `
+    const btnJoinGroup = listSearchGroup.querySelector('#btn-join-group')
+    btnJoinGroup.addEventListener('click', async () => {
+      try {
+        const res = await apiClient.put(`/rooms/join/${rooms._id}`, {
+          userId: MY_ID
+        })
+        Notification('success', 'Thành viên đã tham gia thành công')
+        getGroups()
+        modalSearch.style.display = 'none';
+      } catch (error) {
+        Notification('error', error?.response?.data?.message)
+      }
+    })
+
+  } catch (error) {
+    Notification('error', "Không tìm thấy group nào")
+  }
+
+})
 
 // Thêm thành viên
 const handleAddMember = async (userId) => {
@@ -322,6 +482,18 @@ formAddMember.addEventListener('submit', async (e) => {
   })
 
 })
+
+// Ròi nhóm
+// btnLeaveGroup.addEventListener('click', async (e) => {
+//   try {
+//     const res = await apiClient.put(`/rooms/leave/${CURRENT_ROOM_ID}`)
+//     Notification('success', res.data.data.message)
+//     getGroups()
+//   } catch (error) {
+//     console.log(error)
+//     Notification('error', error.response.data.message)
+//   }
+// })
 
 // Handle logout
 $('#logout')?.addEventListener('click', (e) => {

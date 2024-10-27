@@ -1,8 +1,16 @@
 import apiClient from "./axiosConfig.js";
 import Notification from "./notification.js";
 
-let MY_ID = '';
-let CURRENT_ROOM_ID = '';
+(async () => {
+   try {
+      const res = await apiClient.get('v1/users/verify_token')
+      localStorage.setItem("userInfo", JSON.stringify(res.data.data));
+   } catch (error) {
+      localStorage.removeItem('accessToken')
+      localStorage.removeItem('userInfo')
+      window.location.href = '../../src/pages/signin.html'
+   }
+})();
 
 const $ = document.querySelector.bind(document);
 
@@ -88,6 +96,11 @@ formCreateGroup.addEventListener("submit", (e) => {
             },
          });
          console.log("Group created:", response.data);
+         if (response) {
+            Notification(success, "Tạo Phòng Thành công");
+         } else {
+            Notification(error, "Tạo Phòng thất bại");
+         }
       } catch (err) {
          console.log(err);
       }
@@ -113,7 +126,6 @@ imgInput.addEventListener("change", (event) => {
 const chatWrapperNode = $('#chat-wrapper')
 const moreChatLoadingNode = $('#more-chat-loading')
 const chatContainerNode = $('#chat-container')
-
 let currentPage = 1
 let hasMore = true
 let isLoading = false
@@ -125,49 +137,56 @@ const getMessagesInRoom = async (page = 1, roomId) => {
       if(page === 1) {
          console.log('first', data[data.length - 1])
       }
-      return data
+      return data;
    } catch (error) {
-      console.log(error)
+      console.log(error);
    }
-}
+};
 const renderMessages = async (page) => {
    if (isLoading || !hasMore || !MY_ID || !CURRENT_ROOM_ID) return
    isLoading = true
    moreChatLoadingNode.style.display = 'block'
    const list = await getMessagesInRoom(page, CURRENT_ROOM_ID)
    if (list.length === 0) {
-      hasMore = false
-      isLoading = false
-      moreChatLoadingNode.style.display = 'none'
-      return
+      hasMore = false;
+      isLoading = false;
+      moreChatLoadingNode.style.display = "none";
+      return;
    }
-   hasMore = true
-   console.log(list)
-   list.forEach(item => {
-      const messageElement = document.createElement('div')
-      const class1 = MY_ID === item.userInfo.userId ? '*:bg-primary flex-row-reverse' : '*:bg-gray-400'
-      messageElement.className = `flex mb-4 gap-2.5 cursor-pointer text-white ${class1}`
+   hasMore = true;
+   console.log(list);
+   list.forEach((item) => {
+      const messageElement = document.createElement("div");
+      const class1 =
+         MY_ID === item.userInfo.userId
+            ? "*:bg-primary flex-row-reverse"
+            : "*:bg-gray-400";
+      messageElement.className = `flex mb-4 gap-2.5 cursor-pointer text-white ${class1}`;
       messageElement.innerHTML = `
             <div class="size-9 rounded-full">
                <img src="${item.userInfo.avatar}"
                      alt="My Avatar" class="size-full object-cover rounded-full">
             </div>
             <div class="max-w-96 rounded-lg p-3">
-               ${item.message.type === 'text' ? `<p>${item.message.content}</p>` : `<img class="max-w-60" src="${item.message.content}" alt="">`}
+               ${
+                  item.message.type === "text"
+                     ? `<p>${item.message.content}</p>`
+                     : `<img class="max-w-60" src="${item.message.content}" alt="">`
+               }
             </div>
-      `
-      chatWrapperNode.prepend(messageElement)
-   })
-   isLoading = false
-   moreChatLoadingNode.style.display = 'none'
-}
-renderMessages(1)
-chatContainerNode.addEventListener('scroll', () => {
+      `;
+      chatWrapperNode.prepend(messageElement);
+   });
+   isLoading = false;
+   moreChatLoadingNode.style.display = "none";
+};
+renderMessages(1);
+chatContainerNode.addEventListener("scroll", () => {
    if (chatContainerNode.scrollTop === 0 && hasMore && !isLoading) {
-      ++currentPage
-      renderMessages(currentPage)
+      ++currentPage;
+      renderMessages(currentPage);
    }
-})
+});
 
 // let realTimeUpdateMessage = setInterval(() => {
 //    renderMessages(1)
@@ -201,9 +220,58 @@ formMessage.addEventListener("submit", async (e) => {
    }
 });
 
+// Get Grops
+
+async function getGroups() {
+   try {
+      const response = await apiClient.get("v1/rooms/get_all");
+      const groups = response.data.data;
+      groups.forEach((room) => {
+         console.log(room);
+         const timestamp = room.createAt;
+         const date = new Date(timestamp);
+         const hours = date.getHours();
+         const minutes = date.getMinutes().toString().padStart(2, "0");
+         const period = hours >= 12 ? "pm" : "am";
+         const formattedHours = hours % 12 || 12;
+         const formattedTime = `${formattedHours}.${minutes}${period}`;
+         const htmls = `
+            <li class="flex items-center border-b border-[#B4ABAB] py-[14px]" >
+               <img src=${room.avatarRoom} class="w-[45px] h-[45px] mr-[16px]"
+                     alt="no img">
+               <div class="flex items-center justify-between w-full">
+                     <div class="flex flex-col">
+                        <h4 class="text-base text-textPrimary font-semibold">${
+                           room.roomName
+                        }</h4>
+                        <p class="text-textPrimary font-light text-sm max-w-[185px] line-clamp-1">${
+                           room?.latestMessage?.content ||
+                           "chưa có tin nhắn nào"
+                        }
+                       </p>
+                     </div>
+                     <div class="flex flex-col items-end">
+                        <p class="text-[12px] text-textPrimary font-light">${formattedTime}</p>
+                     </div>
+               </div>
+            </li>
+         `;
+         listGroups.innerHTML += htmls;
+      });
+   } catch (err) {
+      console.log(err);
+   }
+}
+
+getGroups();
+
 //button logout
-$('#logout')?.addEventListener('click', (e) => {
-   localStorage.removeItem('accessToken')
-   localStorage.removeItem('userInfo')
-   Notification('success', 'Đăng xuất thành công!', '../../src/pages/signin.html')
-})
+$("#logout")?.addEventListener("click", (e) => {
+   localStorage.removeItem("accessToken");
+   localStorage.removeItem("userInfo");
+   Notification(
+      "success",
+      "Đăng xuất thành công!",
+      "../../src/pages/signin.html"
+   );
+});

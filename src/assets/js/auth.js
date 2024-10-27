@@ -3,34 +3,22 @@ const regexPassword = /^[a-zA-Z0-9@$!%*#?&]{6,16}$/;
 
 //Signin code
 import apiClient from "./axiosConfig.js";
+import Notification from "./notification.js";
+
 const formSignin = document.getElementById("form-signin");
 formSignin?.addEventListener("submit", async (e) => {
     e.preventDefault();
     const formData = new FormData(formSignin);
     const email = formData.get("email");
     const password = formData.get("password");
-    const notification = document.getElementById("signinToast");
     const isValid = validateFormSignin(email, password);
     if(isValid) {
         try{
             const result = await apiClient.post("/users/login", formData)
-            const userInfo = {
-                id: result.data.data.id,
-                username: result.data.data.username,
-            }
             localStorage.setItem("accessToken", result.data.data.accessToken)
-            notification.classList.remove("hidden");
-            setTimeout( () => {
-                window.location.href = "../../src/pages/chat.html";
-            }, 2000)
+            Notification("success", result.data.message, '../../src/pages/chat.html')
         } catch(error) {
-            console.log("error: ",error.response.data.error);
-            notification.classList.remove("hidden");
-            notification.innerHTML = "Email hoặc Mật Khẩu không đúng";
-            // setTimeout( () => {
-            //     notification.classList.add("hidden");
-            //
-            // })
+            Notification("error", error.response.data.message)
         }
 
     }
@@ -79,11 +67,10 @@ formSignup?.addEventListener("submit",async (e) => {
     if(isValid) {
         try {
             const result = await apiClient.post("/users/signup", formData)
-            document.getElementById("success-modal").classList.remove("hidden");
+            Notification("success", `${result.data.message}, chào mừng ${username}`, '../../src/pages/signin.html')
             formSignup.reset();
-
         } catch(error) {
-            document.getElementById("error-email").innerText = error.response.data.message;
+            Notification("error", error.response.data.message)
         }
     }
 })
